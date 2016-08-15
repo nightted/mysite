@@ -18,5 +18,7 @@ class VisitorTime (models.Model):
     number = models.IntegerField()
     time= models.DateTimeField(auto_now_add=True) 
 
+    def __unicode__ (self):
+        return  self.CakeName
     
         
