@@ -6,9 +6,11 @@ from django.contrib.sessions.models import Session
 from django.conf.urls.static import static
 from django.conf import settings
 
-from datetime import datetime
-from cheesecake.models  import Cake ,VisitorTime
-from cheesecake.Visitor  import * 
+from datetime import datetime  
+from cheesecake.models  import Cake,VisitorTime,Comment,Buy 
+from cheesecake.forms  import CommentForm,BuyFrom
+from cheesecake.Visitor  import *
+from django.views.generic.edit import FormView 
 import json
 
 def home(request):
@@ -37,7 +39,49 @@ def home(request):
 
 
 
-def session_test(request):
+class CommentFormView(FormView):
+    template_name= 'Comment.html'
+    form_class = CommentForm
+    
 
-    sid = request.COOKIES['sessionid']
-  
+    def form_valid(self, form):
+
+        nickname=self.request.POST['Nickname']
+        email=self.request.POST['Email']
+        cakeflavor=self.request.POST['Cakeflavor']
+        content=self.request.POST['Content']
+
+        Comment.objects.create(Nickname=nickname,Email=email,Flavor=cakeflavor,Content=content )
+        
+        self.request.method='GET' #使填完後清空欄位(get_form_kwargs裡的判斷)
+        c=self.get_context_data() #填完也繼續顯示出空白的填單
+        c['messages']=Comment.objects.all()
+
+        return self.render_to_response(c)
+
+    def get(self, request, *args, **kwargs): 
+        #讓剛進還沒填過的人也看的到先前的留言
+
+        c=self.get_context_data()
+        c['messages']=Comment.objects.all()
+        return self.render_to_response(c)
+
+
+class BuyFormView(FormView):
+
+    template_name ='Buy.html'
+    form_class = BuyForm   
+    success_url = '/success/'
+
+    def form_valid(self,form):
+
+        customer_name=self.request.POST['Customer_name']
+        address=self.request.POST['Address']
+        phonenumber=self.request.POST['Phonenumber']
+        email=self.request.POST['Email']
+        cakeflavor=self.request.POST['Cakeflavor']
+        number=self.request.POST['Number']
+
+        Buy.objects.create(Customer_name=customer_name,Address=address,Phonenumber=phonenumber,Email=email,Cakeflavor=cakeflavor,Number=number )
+
+class SucceccView():
