@@ -1,7 +1,10 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load staticfiles %}
+
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>訂購</title>
+		<title>評論</title>
 		<!-- jquery -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     	<!-- Bootstrap -->
@@ -23,40 +26,42 @@
 		<div class="container">
 
 			<form action="" method="post">{% csrf_token %}
-			    {{ form.as_p }}
-			    <input type="submit" value="送出" id ='submit-btn' />
+			    {% for field in form %}
+				    <div class="fieldWrapper">
+				        {{ field.errors }}
+				        <b>{{ field.label}} :</b> {{ field }}
+				        {% if field.help_text %}
+				        <p class="help">{{ field.help_text|safe }}</p>
+				        {% endif %}
+				    </div>
+				{% endfor %}
+				<input type="submit" value="送出" id ='submit-btn' />
 			</form>
+			
 
 			{% for message in messages %}
 			<p>
 				<div class="post-wrapper">
 					<div class="post">
-							<h2 class="nickname">
+
+							<h2 class="line">
 			                ========================================
 			                </h2>
-							<h2 class="nickname">
+							<h2>
 			                    {{forloop.counter}}樓. 
 			                </h2>
-			                <h2 class="nickname">
+			                <h2 class="Nickname">
 			                    暱稱:{{message.Nickname}} 
 			                </h2>
-			                <h2 class="date">					留言時間:{{message.Timepost|date:"Y / m / d " }}{{message.Timepost|time:"   H : i" }}</h2>
-			            
-
-						
-			                <h2 class="nickname">
+			                <h2 class="date">					留言時間:{{message.Timepost|date:"Y / m / d " }}{{message.Timepost|time:"   H : i" }}
+			                </h2>			           
+			                <h2 class="Email">
 			                    Email:{{message.Email}} 
-			                </h2>
-			            
-
-			            
-			                <h2 class="nickname">
+			                </h2>            
+			                <h2 class="Flavor">
 			                    您購買的口味:{{message.Flavor}} 
-			                </h2>
-			            
-
-						
-			                <h2 class="nickname">
+			                </h2> 						
+			                <h2 class="Content">
 			                    評論:{{message.Content}} 
 			                </h2>
 			            
@@ -64,6 +69,7 @@
 				</div>
 			</p>
 			{% endfor %}
+
 		</div>
 
 	</body>

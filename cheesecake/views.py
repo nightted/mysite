@@ -8,8 +8,9 @@ from django.conf import settings
 
 from datetime import datetime  
 from cheesecake.models  import Cake,VisitorTime,Comment,Buy 
-from cheesecake.forms  import CommentForm,BuyFrom
+from cheesecake.forms  import CommentForm,BuyForm
 from cheesecake.Visitor  import *
+from django import forms
 from django.views.generic.edit import FormView 
 import json
 
@@ -46,10 +47,10 @@ class CommentFormView(FormView):
 
     def form_valid(self, form):
 
-        nickname=self.request.POST['Nickname']
-        email=self.request.POST['Email']
-        cakeflavor=self.request.POST['Cakeflavor']
-        content=self.request.POST['Content']
+        nickname=form.cleaned_data['Nickname']
+        email=form.cleaned_data['Email']
+        cakeflavor=form.cleaned_data['Cakeflavor']
+        content=form.cleaned_data['Content']
 
         Comment.objects.create(Nickname=nickname,Email=email,Flavor=cakeflavor,Content=content )
         
@@ -71,17 +72,19 @@ class BuyFormView(FormView):
 
     template_name ='Buy.html'
     form_class = BuyForm   
-    success_url = '/success/'
+    success_url = '/Buy/'
 
     def form_valid(self,form):
 
-        customer_name=self.request.POST['Customer_name']
-        address=self.request.POST['Address']
-        phonenumber=self.request.POST['Phonenumber']
-        email=self.request.POST['Email']
-        cakeflavor=self.request.POST['Cakeflavor']
-        number=self.request.POST['Number']
+        customer_name=form.cleaned_data['Customer_name']
+        address=form.cleaned_data['Address']
+        phonenumber=form.cleaned_data['Phonenumber']
+        email=form.cleaned_data['Email']
+        cakeflavor=form.cleaned_data['Cakeflavor']
+        number=form.cleaned_data['Number']
 
-        Buy.objects.create(Customer_name=customer_name,Address=address,Phonenumber=phonenumber,Email=email,Cakeflavor=cakeflavor,Number=number )
+        Buy.objects.create(Customer_name=customer_name,Address=address,Phonenumber=phonenumber,Email=email,Cakeflavor=cakeflavor,Buynumber=number )
 
-class SucceccView():
+        return super(BuyFormView,self).form_valid(form)
+
+#class SucceccView():

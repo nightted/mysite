@@ -42,5 +42,5 @@ class Buy(models.Model):
     Phonenumber = models.CharField(max_length=20,default="")
     Email = models.EmailField(max_length=100,default="")
     Cakeflavor = models.CharField(max_length=20,default="")
-    Buyumber = models.IntegerField()
+    Buynumber = models.IntegerField()
     Timepost =  models.DateTimeField(auto_now_add=True,null=True)

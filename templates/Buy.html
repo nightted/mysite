@@ -1,3 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load staticfiles %}
+
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -13,7 +16,29 @@
 
 
 		<script type="text/javascript">
-			#做出一個可以自動計算訂單價錢的js
+			$(document).ready(function()
+			{
+			    $("#id_Number,#id_Cakeflavor").on("change", function() {
+					
+					var number = $("#id_Number").val()		
+					var cost 
+
+					if($("#id_Cakeflavor").val()=='原味')
+					{cost = 500}
+					if($("#id_Cakeflavor").val()=='抹茶紅豆')
+					{cost = 550}
+					if($("#id_Cakeflavor").val()=='芝麻')
+					{cost = 500}
+					if($("#id_Cakeflavor").val()=='蔓越莓')
+					{cost = 650}
+
+					$("div.totalcost").html('共'+number*cost+'元')
+
+
+				});
+
+
+			})
 		</script>
 	</head>
 
@@ -23,22 +48,33 @@
 		<div class="container">
 
 			<form action="" method="post">{% csrf_token %}
-			    {{ form.as_p }}
+			    
+			    {% for field in form %}
+				    <div class="fieldWrapper">
+				        {{ field.errors }}
+				        <b>{{ field.label}} :</b> {{ field }}
+				        {% if field.help_text %}
+				        <p class="help">{{ field.help_text|safe }}</p>
+				        {% endif %}
+				    </div>
+				{% endfor %}
+
 			    <input type="submit" value="送出" id ='submit-btn' />
+
 			</form>
 
-			
-			
+
+				<div class = "totalcost">
+				
+				</div>
+
 				<div class="post-wrapper">
 					<div class="post">
-							
-			            
-
-			            
+								            
 					</div>
 				</div>
 			
-			{
+			
 		</div>
 
 	</body>
