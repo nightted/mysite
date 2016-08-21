@@ -59,7 +59,11 @@
 			                    Email:{{message.Email}} 
 			                </h2>            
 			                <h2 class="Flavor">
-			                    您購買的口味:{{message.Flavor}} 
+			                	您購買的口味:
+			                	{% for flavor in message.Flavor %}
+			                    		{{flavor}}
+			                    			+
+								{% endfor %}
 			                </h2> 						
 			                <h2 class="Content">
 			                    評論:{{message.Content}} 
