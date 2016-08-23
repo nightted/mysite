@@ -92,7 +92,7 @@ class CartCountView(FormView):
 
     template_name ='CartCount.html'
     form_class = Customer_infoForm   
-    success_url = '/CartCount/'
+    success_url = '/Success/'
 
     def get_context_data(self, **kwargs):
        
@@ -111,24 +111,24 @@ class CartCountView(FormView):
                 if len(self.request.session['Buy_infos']) == 0 : #BUG!!!!!! 重新整理會不斷的刪掉訂單!!
                     self.request.session['stop'] = 'stop'
             
-            
+            kwargs['Buy_infos'] = self.request.session['Buy_infos']         
+            return super(CartCountView, self).get_context_data(**kwargs)
 
         #要是不小心太久沒結帳,session過期了, =>
         else :
             kwargs['Warning_infos'] = '您太久沒結帳!請重新選擇商品!'         
             return super(CartCountView, self).get_context_data(**kwargs)
-        kwargs['Buy_infos'] = self.request.session['Buy_infos']         
-        return super(CartCountView, self).get_context_data(**kwargs)
+
         #在此加入上一頁訂單資訊(是一個dict, ex:{'抹茶': 3 } ),才能夠在購物車結帳頁計算顯示總價
         
-        def form_valid(self,form):
+    def form_valid(self,form):
         
-            if  'Customer_infos' not in self.request.session: #1.BUG!! 'Customer_info' 此字典在request.session dict讀不到!!
-                self.request.session['Customer_infos'] = []   #2.BUG!! 直接進入CartCount頁面,會發現沒有產生session!!!
+        if  'Customer_infos' not in self.request.session: 
+            self.request.session['Customer_infos'] = []   #2.BUG!! 直接進入CartCount頁面,會發現沒有產生session!!!
 
-            self.request.session['Customer_infos'].append( (form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email'] ))
+        self.request.session['Customer_infos'].append( (form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email'] ))
 
-            return super(CartCountView,self).form_valid(form)
+        return super(CartCountView,self).form_valid(form)
 
 #這邊是結合購物車顯示與填寫地址功能 並有個btn能連到SuccessView
 
