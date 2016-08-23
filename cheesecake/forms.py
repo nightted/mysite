@@ -29,14 +29,15 @@ class BuyForm(forms.Form):
 
 	def flavortoCost(self):
 #明天這bug先de掉!!!
-		if self.cleaned_data['Cakeflavor'] == '原味':
+		if self.cleaned_data['Cakeflavor'] == u'原味':
 			return 500
-		if self.cleaned_data['Cakeflavor'] == '抹茶紅豆':
+		if self.cleaned_data['Cakeflavor'] == u'抹茶紅豆':
 			return 550
-		if self.cleaned_data['Cakeflavor'] == '芝麻':
+		if self.cleaned_data['Cakeflavor'] == u'芝麻':
 			return 500
-		if self.cleaned_data['Cakeflavor'] == '蔓越莓':
-			return 650	
+		if self.cleaned_data['Cakeflavor'] == u'蔓越莓':
+			return 650
+			
 
 class Customer_infoForm(forms.Form):
 

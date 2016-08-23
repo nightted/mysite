@@ -39,8 +39,6 @@ def home(request):
     return render(request, 'home.html', {'time':time , 'number':number})
                            
 
-
-
 class CommentFormView(FormView):
     template_name= 'Comment.html'
     form_class = CommentForm
@@ -76,11 +74,12 @@ class BuyFormView(FormView):
     success_url = '/Buy/'
 
     def form_valid(self,form):
-        #session新增一dict內dict, = >request.session = {'Buy_info': [('抹茶', 3),()....] , ...}
-        if  'Buy_info' not in self.request.session:
-            self.request.session['Buy_info'] = []           
         
-        self.request.session['Buy_info'].append( (form.cleaned_data['Cakeflavor'], form.flavortoCost(), form.cleaned_data['Number'] ))
+        #session新增一dict內dict, = >request.session = {'Buy_info': [('抹茶', 300, 3 ,900),()....] , ...}
+        if  'Buy_infos' not in self.request.session:
+            self.request.session['Buy_infos'] = []           
+        
+        self.request.session['Buy_infos'].append( (form.cleaned_data['Cakeflavor'], form.flavortoCost(), form.cleaned_data['Number'], form.cleaned_data['Number']*form.flavortoCost() ))
 
         return super(BuyFormView,self).form_valid(form)
 
@@ -93,27 +92,63 @@ class CartCountView(FormView):
 
     template_name ='CartCount.html'
     form_class = Customer_infoForm   
-    success_url = '/Success/'
+    success_url = '/CartCount/'
 
     def get_context_data(self, **kwargs):
        
         if 'form' not in kwargs:
             kwargs['form'] = self.get_form()
 
-        #要是不小心太久沒結帳,session過期了, =>
-        if 'Buy_info' not in self.request.session:
-            self.request.session['Warning_info'] = ['您太久沒結帳!請重新選擇商品!']
-            kwargs['Warning_info'] = self.request.session['Warning_info']         
-            return super(CartCountView, self).get_context_data(**kwargs)
 
-        #在此加入上一頁訂單資訊(是一個dict, ex:{'抹茶': 3 } ),才能夠在購物車結帳頁計算顯示總價
-        kwargs['Buy_info'] = self.request.session['Buy_info']         
+        #刪除指定的購物清單內容
+        if 'Buy_infos' in self.request.session:
+
+            if 'id' in self.request.GET and 'stop' not in self.request.session: 
+
+                delete_index = int(self.request.GET['id'])
+                del self.request.session['Buy_infos'][delete_index] 
+                    
+                if len(self.request.session['Buy_infos']) == 0 : #BUG!!!!!! 重新整理會不斷的刪掉訂單!!
+                    self.request.session['stop'] = 'stop'
+            
+            
+
+        #要是不小心太久沒結帳,session過期了, =>
+        else :
+            kwargs['Warning_infos'] = '您太久沒結帳!請重新選擇商品!'         
+            return super(CartCountView, self).get_context_data(**kwargs)
+        kwargs['Buy_infos'] = self.request.session['Buy_infos']         
         return super(CartCountView, self).get_context_data(**kwargs)
+        #在此加入上一頁訂單資訊(是一個dict, ex:{'抹茶': 3 } ),才能夠在購物車結帳頁計算顯示總價
+        
+        def form_valid(self,form):
+        
+            if  'Customer_infos' not in self.request.session: #1.BUG!! 'Customer_info' 此字典在request.session dict讀不到!!
+                self.request.session['Customer_infos'] = []   #2.BUG!! 直接進入CartCount頁面,會發現沒有產生session!!!
+
+            self.request.session['Customer_infos'].append( (form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email'] ))
+
+            return super(CartCountView,self).form_valid(form)
 
 #這邊是結合購物車顯示與填寫地址功能 並有個btn能連到SuccessView
 
-
 class SuccessView(TemplateView):
-    pass
+    template_name = 'success.html'
+
+    def get_context_data(self, **kwargs):
+
+        S_B = self.request.session['Buy_infos'] #希望能做到合併多筆重複口味訂單數量,ex:[(抹茶,3),(抹茶,4),..]
+        S_C = self.request.session['Customer_infos'][0]
+        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Cakeflavor=[ B[0] for B in S_B ],Buynumber=[ B[2] for B in S_B ] )
+        #!!Bug待解決: 買的口味是很多種的，會輸出一個陣列(list)，But model中,Cakeflavor是CharField(str)!!  
+        kwargs['Total_infos'] = Buytotal
+
+        return super(SuccessView, self).get_context_data(**kwargs)  
+
+    def get(self, request, *args, **kwargs):
+
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
 #顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
 #記得最後結帳完要清空session,不然同一個人再登入會累加之前帳單
