@@ -151,6 +151,7 @@ class CartCountView(FormView):
 
 #這邊是結合購物車顯示與填寫地址功能 並有個btn能連到SuccessView
 
+
 class SuccessView(TemplateView):
     
     template_name = 'success.html'
@@ -160,13 +161,16 @@ class SuccessView(TemplateView):
         S_B = self.request.session['Buy_infos'] #希望能做到合併多筆重複口味訂單數量,ex:[(抹茶,3),(抹茶,4),..]
         S_C = self.request.session['Customer_infos'][0]
 
+        f_list = [list[0] for list in S_B]
+        n_list = [list[2] for list in S_B]
+        f_list=json.dumps(f_list)
+        n_list=json.dumps(n_list)
 
-
-        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Cakeflavor='1',Buynumber='2' )
+        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Cakeflavor=f_list,Buynumber=n_list )
         #!!Bug待解決: 買的口味是很多種的，會輸出一個陣列(list)，But model中,Cakeflavor是CharField(str)!!
 
 
-
+        
         kwargs['Total_infos'] = Buytotal
 
         return super(SuccessView, self).get_context_data(**kwargs)
@@ -175,8 +179,7 @@ class SuccessView(TemplateView):
 
         context = self.get_context_data(**kwargs)
         #刪除客戶訂單個資
-        del self.request.session['Buy_infos']
-        del self.request.session['Customer_infos']
+        
 
         return self.render_to_response(context)
 
