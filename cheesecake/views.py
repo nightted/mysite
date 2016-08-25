@@ -170,8 +170,10 @@ class SuccessView(TemplateView):
         #!!Bug待解決: 買的口味是很多種的，會輸出一個陣列(list)，But model中,Cakeflavor是CharField(str)!!
 
 
-        
-        kwargs['Total_infos'] = Buytotal
+        jsonDec = json.decoder.JSONDecoder()
+        flavor = jsonDec.decode(Buytotal.Cakeflavor)
+        kwargs['Total_infos'] = Buytotal 
+        kwargs['flavor'] = flavor #編碼顯示問題快解決!!!
 
         return super(SuccessView, self).get_context_data(**kwargs)
 
