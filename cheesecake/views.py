@@ -76,6 +76,9 @@ class BuyFormView(FormView):
     success_url = '/Buy/'
 
     def form_valid(self,form):
+        # 使用manytomanyField : Cake  --(many to many)-->  Buy, 如此一來可以使最後model_init的Cakeflavor用obj填入表示
+        # 讀取方面 : Cake  --(many to many)-->  Buy , so => Buy.Cakeflavor.all() vs. Cake.buy_set.all() 
+        # Cake_obj.cakename = form.cleaned_data['Cakeflavor'], then => .append([Cake_obj])
 
         #session新增一dict內dict, = >request.session = {'Buy_info': [['抹茶', 300, 3 ,900],[]....] , ...}
         if  'Buy_infos' not in self.request.session: #第一次進來
@@ -84,7 +87,7 @@ class BuyFormView(FormView):
         
         else: #第二次進來,檢查是否有重複口味,有的話合併訂單,沒就創新的單
             list = self.request.session['Buy_infos']
-            index = [ i  for i in range(0,len(list)) if  form.cleaned_data['Cakeflavor'] == list[i][0]]
+            index = [i for i in range(0,len(list)) if form.cleaned_data['Cakeflavor'] == list[i][0] ]
 
             if index:
                 index=index[0]
@@ -121,16 +124,8 @@ class CartCountView(FormView):
                 delete_index = int(self.request.GET['id'])
                 del self.request.session['Buy_infos'][delete_index]
 
-
-
-
-
                 if len(self.request.session['Buy_infos']) == 0 : #BUG!!!!!! 重新整理會不斷的刪掉訂單!!
                     self.request.session['stop'] = 'stop'
-
-
-
-
 
             kwargs['Buy_infos'] = self.request.session['Buy_infos'] # 顯示~
             return super(CartCountView, self).get_context_data(**kwargs)
@@ -162,19 +157,21 @@ class SuccessView(TemplateView):
         S_C = self.request.session['Customer_infos'][0]
 
         f_list = [list[0] for list in S_B]
-        n_list = [list[2] for list in S_B]
-        f_list=json.dumps(f_list)
-        n_list=json.dumps(n_list)
-
-        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Cakeflavor=f_list,Buynumber=n_list )
-        #!!Bug待解決: 買的口味是很多種的，會輸出一個陣列(list)，But model中,Cakeflavor是CharField(str)!!
-
-
-        jsonDec = json.decoder.JSONDecoder()
-        flavor = jsonDec.decode(Buytotal.Cakeflavor)
+        n_list = [list[2] for list in S_B]        
+       
+        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Buynumber=n_list )
+        Buytotal.save()
+        
+        cakeflavor=[Cake.objects.get(CakeName=cakename) for cakename in f_list]
+        '''        
+        for cake in cakeflavor:
+        Buytotal.cakes.add(cake)
+        '''
+        # 目前問題 : 現在已經製造物件Cake , BUT 無法成功使用add 混入Buytotal中!!! 
+        
         kwargs['Total_infos'] = Buytotal 
-        kwargs['flavor'] = flavor #編碼顯示問題快解決!!!
-
+        kwargs['test'] = str(type(cakeflavor[1]))
+        
         return super(SuccessView, self).get_context_data(**kwargs)
 
     def get(self, request, *args, **kwargs):

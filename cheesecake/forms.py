@@ -1,17 +1,17 @@
 # -*- coding: UTF-8 -*-
 from django import forms
-from django.forms import ComboField
+
 
 class CommentForm (forms.Form):
 	
 	Nickname = forms.CharField(max_length=20,label='您的暱稱')
 	Email = forms.EmailField(max_length=100,label='您的Email',required=False,help_text='(非必填)')
 	Cakeflavor = forms.MultipleChoiceField(label='您訂購的口味',widget=forms.CheckboxSelectMultiple,choices= (
-        ('原味','原味'),
-        ('抹茶紅豆','抹茶紅豆'),
-        ('芝麻','芝麻'),
-        ('蔓越莓','蔓越莓'),
-    ))
+		('原味','原味'),
+		('抹茶紅豆','抹茶紅豆'),
+		('芝麻','芝麻'),
+		('蔓越莓','蔓越莓'),
+	))
 	Content = forms.CharField(max_length = 500 ,label='您的評論')
 	
 
@@ -28,7 +28,8 @@ class BuyForm(forms.Form):
 	Number = forms.IntegerField(label='您訂購的數量',localize= False,max_value=100,min_value=0)
 
 	def flavortoCost(self):
-#明天這bug先de掉!!!
+
+		# 注意cleaned_data裡面是unicode~
 		if self.cleaned_data['Cakeflavor'] == u'原味':
 			return 500
 		if self.cleaned_data['Cakeflavor'] == u'抹茶紅豆':

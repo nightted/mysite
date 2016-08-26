@@ -41,7 +41,11 @@
         {{Total_infos.Address}}
         {{Total_infos.Phonenumber}}
         {{Total_infos.Email}}
-        Cakeflavor={{flavor}}
+        Cakeflavor=
+        {% for cake in Total_infos.Cakeflavor.all %}
+        {{forloop.counter}}.{{cake.CakeName}}
+        {% endfor %}
+        test={{test}}
         Number={{Total_infos.Buynumber}}
     </div>
 

@@ -78,8 +78,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cheesecake',
+        'USER' : 'root',
+        'PASSWORD' : 'ted0920536607',
+        'HOST' : '127.0.0.1', 
+        'PORT' : '3306', 
+
     }
 }
 
@@ -122,6 +127,7 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+MEDIA_ROOT = 'C:/Users/h5904/mysite/static/pic'
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 STATIC_URL = '/static/'
 STATIC_ROOT = "C:/Users/h5904/mysite/"

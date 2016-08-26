@@ -8,7 +8,7 @@ class Cake(models.Model):
 
     CakeName = models.CharField(max_length=100)
     CakeContent = models.TextField(blank=True)
-    photo = models.URLField(blank=True)
+    photo = models.ImageField(upload_to='pic',null=True,blank=True)
     location = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -41,6 +41,6 @@ class Buy(models.Model):
     Address =  models.CharField(max_length=200,default="")
     Phonenumber = models.CharField(max_length=20,default="")
     Email = models.EmailField(max_length=100,default="")
-    Cakeflavor = models.TextField(max_length=200,null=True)
     Buynumber = models.TextField(max_length=200,null=True)
     Timepost =  models.DateTimeField(auto_now_add=True,null=True)
+    Cakeflavor = models.ManyToManyField(Cake)
