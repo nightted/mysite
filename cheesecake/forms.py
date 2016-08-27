@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from django import forms
+from django.core.mail import send_mail
 
 
 class CommentForm (forms.Form):
@@ -46,6 +47,22 @@ class Customer_infoForm(forms.Form):
 	Address =  forms.CharField(max_length=200,label='您的地址')
 	Phonenumber = forms.CharField(max_length=20,label='您的聯絡電話')
 	Email = forms.EmailField(max_length=100,label='您的Email(非必填)',required=False)
+
+	def sendmail(self,Buy_infos):
+		send_mail(
+		self.cleaned_data['Customer_name']+'先生/小姐，您的訂單', 
+		'以下是您訂購的商品:\n'+
+		'\n'.join(self.merge_str(Buy_infos))+'\n感謝您的訂購!!!'
+		, 
+		'h5904098@email.com', 
+		[str(self.cleaned_data['Email'])],
+		)
+
+	def merge_str(self,Buy_infos):
+
+		merge = [ 'X'.join([infos[0],str(infos[2])]) for infos in Buy_infos]
+		return merge
+
 
 #待解決:訂購不同數量不同種蛋糕 => 可能要用各個口味旁設置加減數量器
 #Ans=>似乎做成購物車更適合

@@ -34,22 +34,21 @@
 
 <body>
 
-<div class="row">
+<div class="container">
 
-    <div class="span10">
-        {{Total_infos.Customer_name}}
-        {{Total_infos.Address}}
-        {{Total_infos.Phonenumber}}
-        {{Total_infos.Email}}
-        Cakeflavor=
+    <div class="span1">
+        <p>您的姓名: {{Total_infos.Customer_name}}</p>
+        <p>您的地址: {{Total_infos.Address}}</p>
+        <p>您的電話: {{Total_infos.Phonenumber}}</p>
+        <p>您的Email: {{Total_infos.Email}}</p>
+        <p>您訂購的口味: 
         {% for cake in Total_infos.Cakeflavor.all %}
         {{forloop.counter}}.{{cake.CakeName}}
-        {% endfor %}
-        test={{test}}
-        Number={{Total_infos.Buynumber}}
+        {% endfor %}</p>
+        <p>數量: {{Total_infos.Buynumber}}</p>
     </div>
 
-    <div class="span4">
+    <div class="span2">
 
         <p><a class="btn primary span2" href="/">回首頁</a></a></p>
 

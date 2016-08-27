@@ -23,8 +23,8 @@ def home(request):
     request.session['uesr_id'] = Session.objects.count() +1     #set sessions
     request.session.set_expiry(300)  #set sessions
     request.session.clear_expired()   #set sessions
-    #解決Session.objects算不到的問題
-    #嘗試用settinterval 概念 每十分鐘就利用Function發出Request 抓取Count數值 並存到Models裡
+    #(X)解決Session.objects算不到的問題
+    #(O)嘗試用settinterval 概念 每十分鐘就利用Function發出Request 抓取Count數值 並存到Models裡
     set_interval(data_to_SQL, 10)# transfer visitor data to SQL
     #session過期時間應該跟抓取時間一致才能統計'一個間隔'內的上線數
 
@@ -35,7 +35,7 @@ def home(request):
             a="{0}月{1}日 - {2}:{3}:{4}".format(i.time.strftime('%m'),i.time.strftime('%d'),i.time.strftime('%H'),i.time.strftime('%M'),i.time.strftime('%S'))
             t.append(a)
 
-    time=json.dumps(t)  #這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
+    time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
 
 
     return render(request, 'home.html', {'time':time , 'number':number})
@@ -50,19 +50,19 @@ class CommentFormView(FormView):
 
         nickname=form.cleaned_data['Nickname']
         email=form.cleaned_data['Email']
-        cakeflavor=form.cleaned_data['Cakeflavor']#!!這邊傳回來的是list(MultipleChoiceField),但傳給model那邊會把它變成str(charField),待解決
+        cakeflavor=form.cleaned_data['Cakeflavor']#(X)這邊傳回來的是list(MultipleChoiceField),但傳給model那邊會把它變成str(charField),待解決
         content=form.cleaned_data['Content']
 
         Comment.objects.create(Nickname=nickname,Email=email,Flavor=cakeflavor,Content=content )
 
-        self.request.method='GET' #使填完後清空欄位(get_form_kwargs裡的判斷)
-        c=self.get_context_data() #填完也繼續顯示出空白的填單
+        self.request.method='GET' #(O)使填完後清空欄位(get_form_kwargs裡的判斷)
+        c=self.get_context_data() #(O)填完也繼續顯示出空白的填單
         c['messages']=Comment.objects.all()
 
         return self.render_to_response(c)
 
     def get(self, request, *args, **kwargs):
-        #讓剛進還沒填過的人也看的到先前的留言
+        #(O)讓剛進還沒填過的人也看的到先前的留言
 
         c=self.get_context_data()
         c['messages']=Comment.objects.all()
@@ -76,9 +76,9 @@ class BuyFormView(FormView):
     success_url = '/Buy/'
 
     def form_valid(self,form):
-        # 使用manytomanyField : Cake  --(many to many)-->  Buy, 如此一來可以使最後model_init的Cakeflavor用obj填入表示
-        # 讀取方面 : Cake  --(many to many)-->  Buy , so => Buy.Cakeflavor.all() vs. Cake.buy_set.all() 
-        # Cake_obj.cakename = form.cleaned_data['Cakeflavor'], then => .append([Cake_obj])
+        ## (O)使用manytomanyField : Cake  --(many to many)-->  Buy, 如此一來可以使最後model_init的Cakeflavor用obj填入表示
+        ## (O)讀取方面 : Cake  --(many to many)-->  Buy , so => Buy.Cakeflavor.all() vs. Cake.buy_set.all() 
+        ## (O)Cake_obj.cakename = form.cleaned_data['Cakeflavor'], then => .append([Cake_obj])
 
         #session新增一dict內dict, = >request.session = {'Buy_info': [['抹茶', 300, 3 ,900],[]....] , ...}
         if  'Buy_infos' not in self.request.session: #第一次進來
@@ -100,9 +100,9 @@ class BuyFormView(FormView):
         return super(BuyFormView,self).form_valid(form)
 
 # In views.py :
-# 1.BuyFormView:利用session暫存購物車內容(設置一個加入購物車input),且此頁只有選商品跟數量功能 
-# 2.CartCountView(填寫地址(也是利用session暫存)&顯示購物內容&設置一個結帳input)
-# 3.SucceccView: 顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
+## (O)1.BuyFormView:利用session暫存購物車內容(設置一個加入購物車input),且此頁只有選商品跟數量功能 
+## (O)2.CartCountView(填寫地址(也是利用session暫存)&顯示購物內容&設置一個結帳input)
+## (O)3.SucceccView: 顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
 
 class CartCountView(FormView):
 
@@ -124,24 +124,26 @@ class CartCountView(FormView):
                 delete_index = int(self.request.GET['id'])
                 del self.request.session['Buy_infos'][delete_index]
 
-                if len(self.request.session['Buy_infos']) == 0 : #BUG!!!!!! 重新整理會不斷的刪掉訂單!!
+                if len(self.request.session['Buy_infos']) == 0 : #(X)BUG!!!!!! 重新整理會不斷的刪掉訂單!!
                     self.request.session['stop'] = 'stop'
 
             kwargs['Buy_infos'] = self.request.session['Buy_infos'] # 顯示~
             return super(CartCountView, self).get_context_data(**kwargs)
 
-        #要是不小心太久沒結帳,session過期了, =>
+        ##(X)要是不小心太久沒結帳,session過期了, =>
         else :
             kwargs['Warning_infos'] = '您太久沒結帳!請重新選擇商品!' #BUG!!!! 顯示不出來!!          
             return super(CartCountView, self).get_context_data(**kwargs)
 
-        #在此加入上一頁訂單資訊(是一個dict, ex:{'抹茶': 3 } ),才能夠在購物車結帳頁計算顯示總價
 
     def form_valid(self,form):
 
         self.request.session['Customer_infos'] = []
         self.request.session['Customer_infos'].append( [form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email']] )
-
+       
+        ##(X)加入send_mail,顧客訂單一送出就傳mail通知~
+        form.sendmail(self.request.session['Buy_infos'])
+        ##(X)這裡加上try , expect敘述 , 以防蛋糕表單是空的拋出例外~
         return super(CartCountView,self).form_valid(form)
 
 #這邊是結合購物車顯示與填寫地址功能 並有個btn能連到SuccessView
@@ -153,34 +155,32 @@ class SuccessView(TemplateView):
 
     def get_context_data(self, **kwargs):
 
-        S_B = self.request.session['Buy_infos'] #希望能做到合併多筆重複口味訂單數量,ex:[(抹茶,3),(抹茶,4),..]
+        S_B = self.request.session['Buy_infos'] #(O)希望能做到合併多筆重複口味訂單數量,ex:[(抹茶,3),(抹茶,4),..]
         S_C = self.request.session['Customer_infos'][0]
 
         f_list = [list[0] for list in S_B]
         n_list = [list[2] for list in S_B]        
-       
-        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Buynumber=n_list )
-        Buytotal.save()
-        
         cakeflavor=[Cake.objects.get(CakeName=cakename) for cakename in f_list]
-        '''        
-        for cake in cakeflavor:
-        Buytotal.cakes.add(cake)
-        '''
-        # 目前問題 : 現在已經製造物件Cake , BUT 無法成功使用add 混入Buytotal中!!! 
         
+        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Buynumber=n_list )
+        Buytotal.save()       
+
+        for cake in cakeflavor:
+            Buytotal.Cakeflavor.add(cake)        
+
+##(O)目前問題 : 現在已經製造物件Cake , BUT 無法成功使用add 混入Buytotal中!!!         
         kwargs['Total_infos'] = Buytotal 
-        kwargs['test'] = str(type(cakeflavor[1]))
+        #kwargs['test'] = str(type(cakeflavor[1])) 
         
         return super(SuccessView, self).get_context_data(**kwargs)
+
 
     def get(self, request, *args, **kwargs):
 
         context = self.get_context_data(**kwargs)
-        #刪除客戶訂單個資
-        
+        #刪除客戶訂單個資       
 
         return self.render_to_response(context)
 
-#顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
-#記得最後結帳完要清空session,不然同一個人再登入會累加之前帳單
+##(O)顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
+##(O)記得最後結帳完要清空session,不然同一個人再登入會累加之前帳單
