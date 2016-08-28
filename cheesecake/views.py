@@ -9,7 +9,7 @@ from django.conf import settings
 from datetime import datetime
 from cheesecake.models  import Cake,VisitorTime,Comment,Buy
 from cheesecake.forms  import CommentForm, BuyForm, Customer_infoForm
-from cheesecake.Visitor  import *
+from cheesecake.Visitor_CakeNumber  import *
 from django import forms
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView
@@ -28,17 +28,17 @@ def home(request):
     set_interval(data_to_SQL, 10)# transfer visitor data to SQL
     #session過期時間應該跟抓取時間一致才能統計'一個間隔'內的上線數
 
-    number=[]
+    number_people=[]
     t=[]
     for i in VisitorTime.objects.all():
-            number.append(int(i.number))
+            number_people.append(int(i.number))
             a="{0}月{1}日 - {2}:{3}:{4}".format(i.time.strftime('%m'),i.time.strftime('%d'),i.time.strftime('%H'),i.time.strftime('%M'),i.time.strftime('%S'))
             t.append(a)
-
     time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
 
+    number_cake = cake_Count()
 
-    return render(request, 'home.html', {'time':time , 'number':number})
+    return render(request, 'home.html', {'time':time , 'number_people':number_people ,'number_cake':number_cake})
 
 
 class CommentFormView(FormView):
@@ -142,7 +142,7 @@ class CartCountView(FormView):
         self.request.session['Customer_infos'].append( [form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email']] )
        
         ##(X)加入send_mail,顧客訂單一送出就傳mail通知~
-        form.sendmail(self.request.session['Buy_infos'])
+        #form.sendmail(self.request.session['Buy_infos'])
         ##(X)這裡加上try , expect敘述 , 以防蛋糕表單是空的拋出例外~
         return super(CartCountView,self).form_valid(form)
 
@@ -160,17 +160,17 @@ class SuccessView(TemplateView):
 
         f_list = [list[0] for list in S_B]
         n_list = [list[2] for list in S_B]        
-        cakeflavor=[Cake.objects.get(CakeName=cakename) for cakename in f_list]
+        
         
         Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Buynumber=n_list )
         Buytotal.save()       
 
-        for cake in cakeflavor:
-            Buytotal.Cakeflavor.add(cake)        
+        for cakename in f_list:
+            Buytotal.Cakeflavor.add(Cake.objects.get(CakeName=cakename))        
 
 ##(O)目前問題 : 現在已經製造物件Cake , BUT 無法成功使用add 混入Buytotal中!!!         
         kwargs['Total_infos'] = Buytotal 
-        #kwargs['test'] = str(type(cakeflavor[1])) 
+        #kwargs['test'] = str(type(Buytotal.Buynumber)) 
         
         return super(SuccessView, self).get_context_data(**kwargs)
 
@@ -179,7 +179,8 @@ class SuccessView(TemplateView):
 
         context = self.get_context_data(**kwargs)
         #刪除客戶訂單個資       
-
+        del self.request.session['Buy_infos']
+        del self.request.session['Customer_infos']
         return self.render_to_response(context)
 
 ##(O)顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內

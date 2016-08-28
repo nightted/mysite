@@ -44,3 +44,6 @@ class Buy(models.Model):
     Buynumber = models.TextField(max_length=200,null=True)
     Timepost =  models.DateTimeField(auto_now_add=True,null=True)
     Cakeflavor = models.ManyToManyField(Cake)
+
+    def __unicode__ (self):
+        return  self.Customer_name

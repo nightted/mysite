@@ -23,7 +23,7 @@
     <link href="/static/css/responsiveslides.css" rel="stylesheet" type="text/css">
     <link href="/static/css/homepage.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="/static/js/responsiveslides.js"></script>
-    <script type="text/javascript" src="/static/js/chart.js"></script>
+    <script type="text/javascript" src="/static/js/chart.min.js"></script>
 
 <!-- slide initial -->    
     <script type="text/javascript">
@@ -53,7 +53,8 @@
     </script>
 
     <style>
-        .zone{width:100%; height:100%;}
+        .zone1{width:100%; height:100%;}
+        .zone2{width:100%; height:100%;}
     </style>
 
     <!-- chart initial -->
@@ -63,7 +64,7 @@
                 datasets: [
                         {
                             
-                            label:'Number of People online' ,
+                            label:'' ,
                             
                             lineTension: 0.1,
                             backgroundColor: "rgba(255, 0, 123,0.25) ",
@@ -81,30 +82,68 @@
                             pointHoverBorderWidth: 2,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: {{number}},
+                            data: {{number_people}},
                             
                         }
                 ]
         };
 
+        var BarData = {
+                labels: ["原味", "抹茶紅豆", "芝麻", "蔓越莓"],
+                datasets: [
+                    {
+                           label: "",
+                           backgroundColor: [
+                                'rgba(255, 191,0,0.2)',
+                                'rgba(4, 255, 0,0.2)',
+                                'rgba(91,91,91,0.5)',
+                                'rgba(255, 0, 89,0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 191,0,0.2)',
+                                'rgba(4, 255, 0,0.2)',
+                                'rgba(91,91,91,0.2)',
+                                'rgba(255, 0, 89,0.2)',
+                            ],
+                            borderWidth: 1,
+                            data: {{number_cake}} 
+                        }
+                    ]
+                };
+
         window.onload = function(){
-        var ctx = document.getElementById("chart-area").getContext("2d");
-        Chart.defaults.global.title.fontSize =20
-        Chart.defaults.global.elements.point.borderColor="#2BFF00"
-        var myLines= new Chart.Line(ctx, {
-                data: linesData,
-                options: {
-                                    title: {
-                                            display: true,
-                                            text: 'People online'
-                                            
-                                                    }
-                                
-                                    
-                             }
-            });
+            Chart.defaults.global.title.fontSize =20
+            Chart.defaults.global.elements.point.borderColor="#2BFF00"
+
+            var ctx1 = document.getElementById("chart-area-line").getContext("2d");
+            var myLines= new Chart.Line(ctx1, {
+                    data: linesData,
+                    options:{
+                                title: {
+                                    display: true,
+                                    text: 'People online'
+                                    }
+                            }
+                    });
+
+            var ctx2 = document.getElementById("chart-area-bar").getContext("2d");  
+            var myBars= new Chart.Bar(ctx2, {
+                    data:BarData,
+                    options:{
+                                title: {
+                                    display: true,
+                                    text: '兔子們買的口味'
+                                    }
+                            }
+                    });
         };
+        
+
     </script>
+
+  
+
+    
 
 
 
@@ -153,20 +192,25 @@
 
 
         <ul class="rslides">
-            <li><img src="http://icrvb3jy.xinmedia.com/solomo/article/22171/CFC046CC-9CA8-44B8-B403-B444ACA240E7.jpg" alt=""></li>
-            <li><img src="https://4.bp.blogspot.com/-R_A1iCtVw0Q/VqNAnHY-TZI/AAAAAAAAFbI/bLHpSfLBIf0/s1600/IMG_5562.JPG" alt=""></li>
-            <li><img src="http://pic.pimg.tw/loloto/1354961190-3366319697_l.jpg" alt=""></li>
-            <li><img src="http://www.lifetour.com.tw/eWeb_lifetour/IMGDB/001333/001336/001357/00034213.jpg" width="490" alt=""></li>
-            <li><img src="https://i.ytimg.com/vi/0wQfbpErDi0/maxresdefault.jpg" alt=""></li>
+            <li><img src="/static/pic/origin.jpg" alt=""></li>
+            <li><img src="/static/pic/redbean.jpg" alt=""></li>
+            <li><img src="/static/pic/cransberry.jpg" alt=""></li>
+            <li><img src="/static/pic/redbean2.jpg" alt=""></li>
+            <li><img src="/static/pic/cransberry2.jpg" alt=""></li>
+            <li><img src="/static/pic/apple.jpg" alt=""></li>
+            
+            
         </ul>
 
-        
+            
 
             <p><a class="btn primary span2" href="/Buy/">購物</a></p>
-            <p><a class="btn primary span2" href="/Comment/">給我們評論</a></p>
-            <canvas id="chart-area" class="zone"></canvas>
-
-
+            <p><a class="btn primary span2" href="/Comment/">給我們評論</a></p>            
+           
+            <div>
+                <canvas id="chart-area-line" class="zone1"></canvas>              
+                <canvas id="chart-area-bar" class="zone2"></canvas>
+            </div>
           
 
     </div>
