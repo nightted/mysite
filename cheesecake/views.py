@@ -36,7 +36,7 @@ def home(request):
             t.append(a)
     time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
 
-    number_cake = cake_Count()
+    number_cake = cake_Count() #做蛋糕數量的統計圖
 
     return render(request, 'home.html', {'time':time , 'number_people':number_people ,'number_cake':number_cake})
 
@@ -95,8 +95,11 @@ class BuyFormView(FormView):
                 list[index][3] += form.cleaned_data['Number']*form.flavortoCost()
 
             else:
-                self.request.session['Buy_infos'].append( [form.cleaned_data['Cakeflavor'], form.flavortoCost(), form.cleaned_data['Number'], form.cleaned_data['Number']*form.flavortoCost()] )
-                
+                list.append( [form.cleaned_data['Cakeflavor'], form.flavortoCost(), form.cleaned_data['Number'], form.cleaned_data['Number']*form.flavortoCost()] )
+        
+        list = self.request.session['Buy_infos']
+        self.request.session['Total_price'] = sum([list[i][3] for i in range(0,len(list))]) #結算總價,存在另一個dict key中
+
         return super(BuyFormView,self).form_valid(form)
 
 # In views.py :
@@ -112,10 +115,6 @@ class CartCountView(FormView):
 
     def get_context_data(self, **kwargs):
 
-        if 'form' not in kwargs:
-            kwargs['form'] = self.get_form()
-
-
         #刪除指定的購物清單內容
         if 'Buy_infos' in self.request.session:
 
@@ -124,10 +123,11 @@ class CartCountView(FormView):
                 delete_index = int(self.request.GET['id'])
                 del self.request.session['Buy_infos'][delete_index]
 
-                if len(self.request.session['Buy_infos']) == 0 : #(X)BUG!!!!!! 重新整理會不斷的刪掉訂單!!
-                    self.request.session['stop'] = 'stop'
+                #if len(self.request.session['Buy_infos']) == 0 : #(X)BUG!!!!!! 重新整理會不斷的刪掉訂單!!
+                #   self.request.session['stop'] = 'stop'
 
-            kwargs['Buy_infos'] = self.request.session['Buy_infos'] # 顯示~
+            kwargs['Buy_infos'] = self.request.session['Buy_infos']
+            kwargs['Total_price'] = self.request.session['Total_price'] # 顯示~
             return super(CartCountView, self).get_context_data(**kwargs)
 
         ##(X)要是不小心太久沒結帳,session過期了, =>
@@ -146,7 +146,7 @@ class CartCountView(FormView):
         ##(X)這裡加上try , expect敘述 , 以防蛋糕表單是空的拋出例外~
         return super(CartCountView,self).form_valid(form)
 
-#這邊是結合購物車顯示與填寫地址功能 並有個btn能連到SuccessView
+        #這邊是結合購物車顯示與填寫地址功能 並有個btn能連到SuccessView
 
 
 class SuccessView(TemplateView):
@@ -155,7 +155,7 @@ class SuccessView(TemplateView):
 
     def get_context_data(self, **kwargs):
 
-        S_B = self.request.session['Buy_infos'] #(O)希望能做到合併多筆重複口味訂單數量,ex:[(抹茶,3),(抹茶,4),..]
+        S_B = self.request.session['Buy_infos'] 
         S_C = self.request.session['Customer_infos'][0]
 
         f_list = [list[0] for list in S_B]
@@ -168,8 +168,9 @@ class SuccessView(TemplateView):
         for cakename in f_list:
             Buytotal.Cakeflavor.add(Cake.objects.get(CakeName=cakename))        
 
-##(O)目前問題 : 現在已經製造物件Cake , BUT 無法成功使用add 混入Buytotal中!!!         
-        kwargs['Total_infos'] = Buytotal 
+        ##(O)目前問題 : 現在已經製造物件Cake , BUT 無法成功使用add 混入Buytotal中!!!         
+        kwargs['Total_infos'] = Buytotal
+        kwargs['Total_price'] = self.request.session['Total_price']
         #kwargs['test'] = str(type(Buytotal.Buynumber)) 
         
         return super(SuccessView, self).get_context_data(**kwargs)
@@ -181,6 +182,7 @@ class SuccessView(TemplateView):
         #刪除客戶訂單個資       
         del self.request.session['Buy_infos']
         del self.request.session['Customer_infos']
+        del self.request.session['Total_price']
         return self.render_to_response(context)
 
 ##(O)顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
