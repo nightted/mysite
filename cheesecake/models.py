@@ -26,7 +26,7 @@ class Comment(models.Model):
 
     Nickname = models.CharField(max_length=20,default="")
     Email = models.EmailField(max_length=100,default="")
-    Flavor = models.CharField(max_length=20,default="")
+    Flavor = models.ManyToManyField(Cake)
     Content = models.CharField(max_length = 500,default="")   
     Timepost =  models.DateTimeField(auto_now_add=True) 
 

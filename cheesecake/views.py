@@ -44,26 +44,21 @@ def home(request):
 class CommentFormView(FormView):
     template_name= 'Comment.html'
     form_class = CommentForm
+    success_url = '/Comment/'
 
 
-    def form_valid(self, form):
+    def form_valid(self, form):       
+        list = form.cleaned_data
 
-        nickname=form.cleaned_data['Nickname']
-        email=form.cleaned_data['Email']
-        cakeflavor=form.cleaned_data['Cakeflavor']#(X)這邊傳回來的是list(MultipleChoiceField),但傳給model那邊會把它變成str(charField),待解決
-        content=form.cleaned_data['Content']
-
-        Comment.objects.create(Nickname=nickname,Email=email,Flavor=cakeflavor,Content=content )
-
-        self.request.method='GET' #(O)使填完後清空欄位(get_form_kwargs裡的判斷)
-        c=self.get_context_data() #(O)填完也繼續顯示出空白的填單
-        c['messages']=Comment.objects.all()
-
-        return self.render_to_response(c)
+        Comments=Comment.objects.create(Nickname=list['Nickname'],Email=list['Email'],Content=list['Content'] )
+        Comments.save()
+        for cakename in form.cleaned_data['Cakeflavor']: #manytomanyField add
+            Comments.Flavor.add(Cake.objects.get(CakeName=cakename))
+        
+        return super(CommentFormView,self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
         #(O)讓剛進還沒填過的人也看的到先前的留言
-
         c=self.get_context_data()
         c['messages']=Comment.objects.all()
         return self.render_to_response(c)

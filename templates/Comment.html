@@ -5,6 +5,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>評論</title>
+
 		<!-- jquery -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     	<!-- Bootstrap -->
@@ -38,6 +39,7 @@
 				<input type="submit" value="送出" id ='submit-btn' />
 			</form>
 			
+			<p><a class="btn primary span2" href="/">回首頁</a></a></p>
 
 			{% for message in messages %}
 			<p>
@@ -59,15 +61,15 @@
 			                    Email:{{message.Email}} 
 			                </h2>            
 			                <h2 class="Flavor">
-			                	您購買的口味:
-			                	{% for flavor in message.Flavor %}
-			                    		{{flavor}}
-			                    			+
-								{% endfor %}
+			                	<p>您訂購的口味: 
+						        {% for cake in message.Flavor.all %}
+						        {{forloop.counter}}.{{cake.CakeName}}
+						        {% endfor %}</p>
 			                </h2> 						
 			                <h2 class="Content">
 			                    評論:{{message.Content}} 
 			                </h2>
+			                <p>test:{{test}}</p>
 			            
 					</div>
 				</div>
