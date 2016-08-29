@@ -6,6 +6,7 @@ from django.contrib.sessions.models import Session
 from django.conf.urls.static import static
 from django.conf import settings
 
+import threading
 from datetime import datetime
 from cheesecake.models  import Cake,VisitorTime,Comment,Buy
 from cheesecake.forms  import CommentForm, BuyForm, Customer_infoForm
@@ -15,30 +16,98 @@ from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView
 import json
 
-def home(request):
+class VisitorTimeMixin(object):
 
-    #前置
-    #%% Django only saves to the session database when the session has been modified!!!
-    request.session.modified = True
-    request.session['uesr_id'] = Session.objects.count() +1     #set sessions
-    request.session.set_expiry(300)  #set sessions
-    request.session.clear_expired()   #set sessions
-    #(X)解決Session.objects算不到的問題
-    #(O)嘗試用settinterval 概念 每十分鐘就利用Function發出Request 抓取Count數值 並存到Models裡
-    set_interval(data_to_SQL, 10)# transfer visitor data to SQL
-    #session過期時間應該跟抓取時間一致才能統計'一個間隔'內的上線數
+    def set_interval(self,func,sec):
+    
+        def func_wrapper():
+            self.set_interval(func, sec) 
+            func()  
 
-    number_people=[]
-    t=[]
-    for i in VisitorTime.objects.all():
-            number_people.append(int(i.number))
-            a="{0}月{1}日 - {2}:{3}:{4}".format(i.time.strftime('%m'),i.time.strftime('%d'),i.time.strftime('%H'),i.time.strftime('%M'),i.time.strftime('%S'))
-            t.append(a)
-    time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
+        t = threading.Timer(sec, func_wrapper)
+        t.start()
+        
 
-    number_cake = cake_Count() #做蛋糕數量的統計圖
 
-    return render(request, 'home.html', {'time':time , 'number_people':number_people ,'number_cake':number_cake})
+    def Visitor_Count(self):
+
+        onlinepeople=0
+        for sess in Session.objects.all():
+            if  datetime.now() < sess.expire_date:
+                onlinepeople+=1
+
+        return onlinepeople
+
+    
+    def data_to_SQL(self):
+
+        VisitorTime.objects.create(number=self.Visitor_Count())
+        if  VisitorTime.objects.count() >= 100:
+            VisitorTime.objects.all()[0].delete()
+
+
+    def cake_Count(self):
+        
+        number_cake=[0,0,0,0]
+
+        for item in Buy.objects.all():
+
+            n=0
+            buynumber=eval(item.Buynumber)
+            for flavor in item.Cakeflavor.all():
+
+                
+                if flavor.CakeName == u'原味':
+                    number_cake[0]+= buynumber[n]
+                if flavor.CakeName == u'抹茶紅豆':
+                    number_cake[1]+= buynumber[n]
+                if flavor.CakeName == u'芝麻':
+                    number_cake[2]+= buynumber[n]
+                if flavor.CakeName == u'蔓越莓':
+                    number_cake[3]+= buynumber[n]
+                n+=1
+
+        return number_cake
+
+    #set_interval(data_to_SQL, 10)
+
+
+
+
+class HomeView(TemplateView,VisitorTimeMixin):
+    
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+
+        number_people=[]
+        t=[]
+        for i in VisitorTime.objects.all():
+                number_people.append(int(i.number))
+                a="{0}月{1}日 - {2}:{3}:{4}".format(i.time.strftime('%m'),i.time.strftime('%d'),i.time.strftime('%H'),i.time.strftime('%M'),i.time.strftime('%S'))
+                t.append(a)
+        time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
+        number_cake = cake_Count()
+
+        kwargs.update({'time':time , 
+                    'number_people':number_people ,
+                    'number_cake':number_cake})
+
+        return super(HomeView,self).get_context_data(**kwargs)
+    
+    def get(self, request, *args, **kwargs): 
+        #前置
+        #%% Django only saves to the session database when the session has been modified!!!
+        request.session.modified = True
+        request.session['uesr_id'] = Session.objects.count() +1     #set sessions
+        request.session.set_expiry(300)  #set sessions
+        request.session.clear_expired()   #set sessions
+        #(X)解決Session.objects算不到的問題
+        #(O)嘗試用settinterval 概念 每十分鐘就利用Function發出Request 抓取Count數值 並存到Models裡
+        set_interval(data_to_SQL, 10)# transfer visitor data to SQL
+        #session過期時間應該跟抓取時間一致才能統計'一個間隔'內的上線數
+
+        return super(HomeView,self).get(self, request, *args, **kwargs)
 
 
 class CommentFormView(FormView):
@@ -182,3 +251,4 @@ class SuccessView(TemplateView):
 
 ##(O)顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
 ##(O)記得最後結帳完要清空session,不然同一個人再登入會累加之前帳單
+
