@@ -1,6 +1,9 @@
-window.onload = function(){
+{% include "home.html" %}
+window.onload = function()
+{
+    
     var linesData = {
-                labels:{{time|safe }},
+                labels:{{time}},
                 datasets: [
                         {
                             
@@ -46,7 +49,7 @@ window.onload = function(){
                                 'rgba(255, 0, 89,0.2)',
                             ],
                             borderWidth: 0.5,
-                            data: {{number_cake}} 
+                            data: {{number_cake}}, 
                         }
                     ]
                 };
@@ -69,7 +72,8 @@ window.onload = function(){
                                 ,scales: {
                                     yAxes: [{
                                         ticks: {
-                                            beginAtZero:true
+                                            beginAtZero:true,
+                                            stepSize:1
                                                 }
                                             }],
 
@@ -91,10 +95,11 @@ window.onload = function(){
                                 ,scales: {
                                     yAxes: [{
                                         ticks: {
-                                            beginAtZero:true
+                                            beginAtZero:true,
+                                            stepSize:1
                                                 }
                                             }]
                                         }
                             }
                     });
-        };
+};

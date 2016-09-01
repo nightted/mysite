@@ -41,11 +41,14 @@ class VisitorTimeMixin(object):
     
     def data_to_SQL(self):
 
+        if  VisitorTime.objects.count() > 20:
+            for i in range(0,VisitorTime.objects.count()-20):
+                VisitorTime.objects.all()[0].delete()
+   
         VisitorTime.objects.create(number=self.Visitor_Count())
-        if  VisitorTime.objects.count() >= 100:
-            VisitorTime.objects.all()[0].delete()
-
-
+   
+        
+        
     def cake_Count(self):
         
         number_cake=[0,0,0,0]
@@ -86,8 +89,9 @@ class HomeView(TemplateView,VisitorTimeMixin):
                 number_people.append(int(i.number))
                 a="{0}月{1}日 - {2}:{3}:{4}".format(i.time.strftime('%m'),i.time.strftime('%d'),i.time.strftime('%H'),i.time.strftime('%M'),i.time.strftime('%S'))
                 t.append(a)
+
         time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
-        number_cake = cake_Count()
+        number_cake = self.cake_Count()
 
         kwargs.update({'time':time , 
                     'number_people':number_people ,
@@ -98,13 +102,14 @@ class HomeView(TemplateView,VisitorTimeMixin):
     def get(self, request, *args, **kwargs): 
         #前置
         #%% Django only saves to the session database when the session has been modified!!!
-        request.session.modified = True
+        
         request.session['uesr_id'] = Session.objects.count() +1     #set sessions
-        request.session.set_expiry(300)  #set sessions
-        request.session.clear_expired()   #set sessions
+        request.session.set_expiry(600)  #set sessions expiry
+        request.session.clear_expired()   #clear expired sessions
         #(X)解決Session.objects算不到的問題
         #(O)嘗試用settinterval 概念 每十分鐘就利用Function發出Request 抓取Count數值 並存到Models裡
-        set_interval(data_to_SQL, 10)# transfer visitor data to SQL
+        self.set_interval(self.data_to_SQL,600)# transfer visitor data to SQL
+        
         #session過期時間應該跟抓取時間一致才能統計'一個間隔'內的上線數
 
         return super(HomeView,self).get(self, request, *args, **kwargs)
@@ -121,6 +126,7 @@ class CommentFormView(FormView):
 
         Comments=Comment.objects.create(Nickname=list['Nickname'],Email=list['Email'],Content=list['Content'] )
         Comments.save()
+
         for cakename in form.cleaned_data['Cakeflavor']: #manytomanyField add
             Comments.Flavor.add(Cake.objects.get(CakeName=cakename))
         
@@ -247,6 +253,7 @@ class SuccessView(TemplateView):
         del self.request.session['Buy_infos']
         del self.request.session['Customer_infos']
         del self.request.session['Total_price']
+
         return self.render_to_response(context)
 
 ##(O)顯示購物成功價錢與匯款資訊,並把session內容通通存到modelDB內
