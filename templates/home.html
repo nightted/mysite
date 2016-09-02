@@ -41,8 +41,8 @@
                           "random": false,          // Boolean: Randomize the order of the slides, true or false
                           "pause": false,           // Boolean: Pause on hover, true or false
                           "pauseControls": true,    // Boolean: Pause when hovering controls, true or false
-                          "prevText": "Previous",   // String: Text for the "previous" button
-                          "nextText": "Next",       // String: Text for the "next" button
+                          "prevText": '',   // String: Text for the "previous" button
+                          "nextText": '',       // String: Text for the "next" button
                           "maxwidth": "",           // Integer: Max-width of the slideshow, in pixels
                           "navContainer": "",       // Selector: Where auto generated controls should be appended to, default is after the <ul>
                           "manualControls": "",     // Selector: Declare custom pager navigation
@@ -179,7 +179,7 @@ window.onload = function()
                 </h1>
             </div>
             <div class='row'>
-                <div class = 'col-lg-6' id='fb'>
+                <div class = 'col-lg-6 col-xs-6' id='fb'>
                 <a href="https://www.facebook.com/bunnycheesecake/?fref=ts"><i class="fa fa-facebook-square fa-lg" aria-hidden="true">眼巴巴的兔子CheeseCake</i></a>
                 </div>
                 <div class = 'col-lg-3' id=''></div>
@@ -193,12 +193,12 @@ window.onload = function()
 
     <div class="slides">
         <ul class="rslides">
-            <li><img src="/static/pic/origin.jpg" alt=""></li>
-            <li><img src="/static/pic/redbean.jpg" alt=""></li>
-            <li><img src="/static/pic/cransberry.jpg" alt=""></li>
-            <li><img src="/static/pic/redbean2.jpg" alt=""></li>
-            <li><img src="/static/pic/cransberry2.jpg" alt=""></li>
-            <li><img src="/static/pic/apple.jpg" alt=""></li>           
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>           
         </ul>
     </div>
 
@@ -244,12 +244,12 @@ window.onload = function()
     <div class='Comment-Buy' id='Comment_Buy'>
         <div class='container'>
             <div class='row'>
-                <div class = 'col-lg-6 text-center' >
+                <div class = 'col-lg-6 col-xs-6 col-sm-6 text-center' >
                     <p><a class="read-more" href="/Buy/" style="font-size:38px;">購物
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     </a></p>
                 </div>
-                <div class = 'col-lg-6 text-center' >
+                <div class = 'col-lg-6 col-xs-6 col-sm-6 text-center' >
                     <p><a class="read-more" href="/Comment/" style="font-size:38px;">給我們評論
                     <i class="fa fa-comment-o" aria-hidden="true"></i>
                     </a></p>            

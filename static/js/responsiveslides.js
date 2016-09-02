@@ -137,12 +137,23 @@
       // Add ID's to each slide
       $slide.each(function (i) {
         this.id = slideClassPrefix + i;
+        $(this).addClass("banner"+" "+"banner"+i);
+        
+        banner_makeup="<div class='caption'>"+ 
+        "<img src=''>"+
+        "</div>"+
+        "<div class='fb'>"+
+        "<a href=''>"+ "<img src=''>"+ "</a>"+
+        "<a href=''>"+ "<img src=''>"+ "</a>"+
+        "</div>";
+        $(this).append(banner_makeup)
       });
 
 
 
       // Add max-width and classes
       $this.addClass(namespace + " " + namespaceIdx);
+      $this.attr('id', 'slider');
       if (options && options.maxwidth) {
         $this.css("max-width", maxw);
       }

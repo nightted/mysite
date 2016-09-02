@@ -21,7 +21,7 @@ body {
 .header {
     background-color: #fff;
     background: #fff url('./../images/stripe.png') repeat-x;
-    margin-bottom: 40px;
+    margin-bottom: 0px;
     padding: 20px 0;
     position: relative;
 }
