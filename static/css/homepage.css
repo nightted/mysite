@@ -20,9 +20,9 @@ body {
 
 .header {
     background-color: #fff;
-    background: #fff url('./../images/stripe.png') repeat-x;
+    background: #FFECF5 url('http://api.thumbr.it/whitenoise-1583x118.png?background=e0aada00&noise=00020f&density=16&opacity=15') repeat-x;
     margin-bottom: 0px;
-    padding: 20px 0;
+    padding: 30px 0;
     position: relative;
 }
 
@@ -279,4 +279,39 @@ hr.fancy-line, hr.fancy-line:before {
     margin-top: 50px;
     margin-bottom: 50px;
 
+}
+
+/*tophead*/
+.top-menu {
+    padding: 0;
+    margin: 0;
+}
+.top-menu ul li {
+    display: inline-block;
+}
+.top-menu ul li a {
+    text-decoration: none;
+    color: #595758;
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 5px 0 5px 40px;
+    padding: 0.25em 0 0 0;
+    letter-spacing: 3px;
+}
+
+.top-menu ul li a:hover {
+    color:  #F00078;
+}
+
+.icon{
+    position: absolute;
+    right: 0;
+    bottom: 0%;
+    width: auto;
+    text-align: center;
+}
+.icon img {
+    width: auto;
+    height: 150px;
 }

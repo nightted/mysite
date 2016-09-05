@@ -171,19 +171,63 @@ window.onload = function()
 <body>
     <div class="header">
         <div class = 'container head'>
-            <div class='Title'>
-                <h1 class="site-title text-center">            
-                    
-                    <a href="/">眼巴巴的兔子CheeseCake</a>
-                    
-                </h1>
-            </div>
             <div class='row'>
-                <div class = 'col-lg-6 col-xs-6' id='fb'>
-                <a href="https://www.facebook.com/bunnycheesecake/?fref=ts"><i class="fa fa-facebook-square fa-lg" aria-hidden="true">眼巴巴的兔子CheeseCake</i></a>
+                <div class='col-lg-3 Title'>
+                    <h1 class="site-title text-center">            
+                        
+                        <a href="/">眼巴巴的兔子CheeseCake</a>
+                        
+                    </h1>
                 </div>
-                <div class = 'col-lg-3' id=''></div>
-                <div class = 'col-lg-3' id=''></div>               
+            
+                <div class = 'col-lg-6 top-menu'>
+
+                    <div class='fb-fanpage'>
+                        <a href="https://www.facebook.com/bunnycheesecake/?fref=ts"><i class="fa fa-facebook-square fa-lg" aria-hidden="true">  眼巴巴的兔子CheeseCake</i></a>
+                    </div>
+
+                    <div>
+                        <span class="menu"></span>
+                        <ul>
+                            <li>
+                                <a href="#slider" class=''>輪播</a>
+                            </li>
+                            <li>
+                                <a href="#Introduction" class=''>蛋糕簡介</a>
+                            </li>
+                            <li>
+                                <a href="#Post" class=''>口味一覽</a>
+                            </li>
+                            <li>
+                                <a href="#Comment_Buy" class=''>評論與購物</a>
+                            </li>
+                            <li>
+                                <a href="#Chart" class=''>兔子熱門商品</a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                <script type="text/javascript">
+                    $('a[href^="#"]').on('click', function(event) {
+                        var target = $(this.getAttribute('href'));
+                        if( target.length ) {
+                            event.preventDefault();
+                            $('html, body').stop().animate({
+                                scrollTop: target.offset().top
+                            }, 1000);
+                        }
+                    });
+
+                </script>
+
+                </div>
+
+                <div class='col-lg-3 icon'>
+                    <img src="https://sdl-stickershop.line.naver.jp/stickershop/v1/product/1231040/iphone/main@2x.png">
+                    <img src='https://sdl-stickershop.line.naver.jp/products/0/0/1/1269564/LINEStorePC/main.png?__=20150924'>
+                </div>
+                                        
             </div>
 
         </div>
@@ -202,9 +246,9 @@ window.onload = function()
         </ul>
     </div>
 
-    <div class='introdution'></div>
+    <div class='introdution' id='Introduction'></div>
 
-    <div class="post-wrapper">
+    <div class="post-wrapper" id='Post'>
         {% for post in post_list %}
         <div class="post">
 
@@ -245,9 +289,9 @@ window.onload = function()
         <div class='container'>
             <div class='row'>
                 <div class = 'col-lg-6 col-xs-6 col-sm-6 text-center' >
-                    <p><a class="read-more" href="/Buy/" style="font-size:38px;">購物
+                    <a class="read-more" href="/Buy/" style="font-size:38px;">購物
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    </a></p>
+                    </a>
                 </div>
                 <div class = 'col-lg-6 col-xs-6 col-sm-6 text-center' >
                     <p><a class="read-more" href="/Comment/" style="font-size:38px;">給我們評論

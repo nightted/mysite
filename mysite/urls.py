@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import include,url
 from django.contrib import admin
-from  cheesecake.views  import HomeView,CommentFormView,BuyFormView,CartCountView,SuccessView
+from  cheesecake.views  import HomeView,PostdetailView,CommentFormView,BuyFormView,CartCountView,SuccessView
 
 from views import  welcome
 
@@ -15,6 +15,7 @@ urlpatterns = [
     #主頁用
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$',HomeView.as_view(),name='home'),
+    url(r'^post/(?P<pk>\d+)/$', PostdetailView, name='postdetail'),
     #買東西用
     url(r'^Buy/$', BuyFormView.as_view(),name='Buy'),
     url(r'^CartCount/$', CartCountView.as_view(),name='CartCount'),

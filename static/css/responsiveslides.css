@@ -63,6 +63,7 @@
   background-size: cover;
   min-height: 820px;
   background-position: center;
+
 }
 /*dot ib banner*/
 .rslides1_tabs {
@@ -118,8 +119,8 @@
   text-indent: -9999px;
   overflow: hidden;
   text-decoration: none;
-  height: 100px;
-  width: 100px;
+  height: 50px;
+  width: 50px;
   margin-top: -25px;
 }
 
@@ -141,3 +142,36 @@
 .banner {
   min-height: 680px;
 }
+
+/*fb tags*/
+
+.caption {
+  width: 100%;
+  margin-top: 230px;
+  display: block;
+  text-align: center;
+  display: block;
+  
+}
+.caption img {
+  width: 370px;
+  height: auto;
+}
+
+.fb {
+  left: 0;
+  top: 167px;
+  width: 41px;
+  position: absolute;
+  overflow: hidden;
+}
+.fb a {
+  display: block;
+  margin: 2px 0;
+}
+.fb img {
+  width: 41px;
+  height: auto;
+}
+
+

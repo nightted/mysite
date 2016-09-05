@@ -14,6 +14,7 @@ from cheesecake.Visitor_CakeNumber  import *
 from django import forms
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
 import json
 
 class VisitorTimeMixin(object):
@@ -115,6 +116,10 @@ class HomeView(TemplateView,VisitorTimeMixin):
         return super(HomeView,self).get(self, request, *args, **kwargs)
 
 
+class PostdetailView(DetailView):
+    pass
+
+
 class CommentFormView(FormView):
     template_name= 'Comment.html'
     form_class = CommentForm
@@ -209,10 +214,12 @@ class CartCountView(FormView):
     def form_valid(self,form):
 
         self.request.session['Customer_infos'] = []
-        self.request.session['Customer_infos'].append( [form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email']] )
+        self.request.session['Customer_infos'].append( [form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email'], form.cleaned_data['Catchmethod']] )
        
         ##(X)加入send_mail,顧客訂單一送出就傳mail通知~
-        #form.sendmail(self.request.session['Buy_infos'])
+        '''
+        form.sendmail(self.request.session['Buy_infos'])
+        '''
         ##(X)這裡加上try , expect敘述 , 以防蛋糕表單是空的拋出例外~
         return super(CartCountView,self).form_valid(form)
 
@@ -232,7 +239,7 @@ class SuccessView(TemplateView):
         n_list = [list[2] for list in S_B]        
         
         
-        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Buynumber=n_list )
+        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Catchmethod=S_C[4],Buynumber=n_list )
         Buytotal.save()       
 
         for cakename in f_list:

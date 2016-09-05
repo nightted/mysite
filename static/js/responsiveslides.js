@@ -143,8 +143,8 @@
         "<img src=''>"+
         "</div>"+
         "<div class='fb'>"+
-        "<a href=''>"+ "<img src=''>"+ "</a>"+
-        "<a href=''>"+ "<img src=''>"+ "</a>"+
+        "<a href='https://www.facebook.com/bunnycheesecake/?fref=ts' target='_blank'>"+ "<img src=''>"+ "</a>"+
+        "<a href='https://www.facebook.com/bunnycheesecake/?fref=ts' target='_blank'>"+ "<img src=''>"+ "</a>"+
         "</div>";
         $(this).append(banner_makeup)
       });

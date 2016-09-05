@@ -40,6 +40,7 @@ class Buy(models.Model):
     Customer_name = models.CharField(max_length=20,default="")
     Address =  models.CharField(max_length=200,default="")
     Phonenumber = models.CharField(max_length=20,default="")
+    Catchmethod = models.CharField(max_length=50,default="")
     Email = models.EmailField(max_length=100,default="")
     Buynumber = models.TextField(max_length=200,null=True)
     Timepost =  models.DateTimeField(auto_now_add=True,null=True)

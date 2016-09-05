@@ -44,9 +44,13 @@ class BuyForm(forms.Form):
 class Customer_infoForm(forms.Form):
 
 	Customer_name = forms.CharField(max_length=20,label='您的姓名')
-	Address =  forms.CharField(max_length=200,label='您的地址')
+	Address =  forms.CharField(max_length=200,label='您的地址(或方便的面交地點)')
 	Phonenumber = forms.CharField(max_length=20,label='您的聯絡電話')
 	Email = forms.EmailField(max_length=100,label='您的Email(非必填)',required=False)
+	Catchmethod = forms.ChoiceField(label='取貨方式',choices= (
+		('面交','面交'),
+	    ('郵寄','郵寄'),
+	))
 
 	def sendmail(self,Buy_infos):
 		send_mail(
