@@ -1,0 +1,34 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+#distance {
+	left:25%;
+
+}
+
+.face-btn {
+	left:50px;   
+	height: 100%;
+ 
+}
+
+#facetrade{
+	opacity: 0;
+}
+
+#map {
+	height: 90%;
+	width: 100%;
+	z-index: 0;
+	right:25%;
+	opacity: 0;
+
+}

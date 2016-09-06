@@ -248,39 +248,43 @@ window.onload = function()
 
     <div class='introdution' id='Introduction'></div>
 
-    <div class="post-wrapper" id='Post'>
-        {% for post in post_list %}
-        <div class="post">
+    <div class="container" id='Post'>
+    
+        {% for Cake in Cakes %}
+        <div class="post-wrapper" id='Post'>
+            <div class="post">
 
-            <div class="post-heading">
-                <h2 class="title">
-                    <a href="#">{{ post.title }}</a>
-                </h2>
-                <div class="date">{{ post.created_at|date:"Y / m / d" }}</div>
-            </div>
+                <div class="post-heading">
+                    <h2 class="title">
+                        <a href="#">{{ Cake.CakeName }}</a>
+                    </h2>
+                    <div class="price">售價:{{Cake.Price}}元</div>
+                </div>
 
-            {% if post.photo %}
+                {% if Cake.photo %}
 
-            <div class="thumbnail">
-                <img src="{{ post.photo }}" alt="">
-            </div>
+                <div class="thumbnail">
+                    <img src="{{ Cake.photo.url}}" alt="" />
+                </div>
 
-            {% else %}
-            <div class="thumbnail thumbnail-default"></div>
+                {% else %}
+                <div class="thumbnail thumbnail-default"></div>
 
-            {% endif %}
+                {% endif %}
 
-            <div class="post-content read-more-block">
-                {{ post.content }}
-            </div>
+                <div class="post-content read-more-block">
+                    {{ Cake.CakeContent }}
+                </div>
 
-            <div class="post-footer">
-                <a class="read-more" href="#">
-                    Read More <i class="fa fa-arrow-right"></i>
-                </a>
+                <div class="post-footer">
+                    <a class="read-more" href="#">
+                        Read More <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
         {% endfor %}
+        
     </div>
 
       

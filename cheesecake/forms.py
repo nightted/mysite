@@ -48,8 +48,18 @@ class Customer_infoForm(forms.Form):
 	Phonenumber = forms.CharField(max_length=20,label='您的聯絡電話')
 	Email = forms.EmailField(max_length=100,label='您的Email(非必填)',required=False)
 	Catchmethod = forms.ChoiceField(label='取貨方式',choices= (
+		('郵寄','郵寄'),
 		('面交','面交'),
-	    ('郵寄','郵寄'),
+	    
+	))
+	Catchlocation = forms.ChoiceField(label='取貨地點(面交者才需要填寫)',choices= (
+		('',''),
+		('新竹聖教會','A(新竹聖教會)'),
+		('城隍廟','B(城隍廟)'),
+		('棒球場','C(棒球場)'),
+		('江山藝改所','D(江山藝改所)'),
+		('新竹市政府','E(新竹市政府)'),
+	    
 	))
 
 	def sendmail(self,Buy_infos):

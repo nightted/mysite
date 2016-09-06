@@ -10,336 +10,137 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/CartCount.css" rel="stylesheet">
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function()
-            {
-
-
-
-
-
+            {  
+                $("#id_Catchmethod").on("change", function() {
+                                
+                                var method = $("#id_Catchmethod").val()       
+                                
+                                if(method=='面交')
+                                {
+                                    $("#facetrade").css("opacity",1);
+                                    $("#map").css("opacity",1);                  
+                                }
+                                if(method=='郵寄')
+                                {
+                                    $("#facetrade").css("opacity",0);
+                                    $("#map").css("opacity",0);
+                                }
+                            });    
             })
-
     </script>
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-
-      #distance {
-        left:25%;
-        
-      }
-      
-      .face-btn {
-        left:50px;
-        
-      }
-
-
-      #map {
-        height: 50%;
-        width: 50%;
-        left:25%;
-        
-      }
-
-      #floating-panel {
-      position: relative;
-      top: 10px;
-      left: 25%;
-      z-index: 5;
-      background-color: #fff;
-      padding: 5px;
-      border: 1px solid #999;
-      text-align: center;
-      font-family: 'Roboto','sans-serif';
-      line-height: 30px;
-      padding-left: 10px;
-      }
-
-    </style>
-        
-
 
 
 
 </head>
 
-
-
-
-
 <body>
 
-<div class="container">
-    <div class="span10">
-        <table class="condensed-table">
-            <thead>
-                <tr>
-                    <th class="header">數量</th>
-                    <th class="yellow header">名稱</th>
-                    <th class="blue header">單價</th>
-                    <th class="red header">小計</th>
-                </tr>
-            </thead>
 
-            <tbody>
+    <div class="container">
+        <div class="">
+            <table class="condensed-table">
+                <thead>
+                    <tr>
+                        <th class="header">數量</th>
+                        <th class="yellow header">名稱</th>
+                        <th class="blue header">單價</th>
+                        <th class="red header">小計</th>
+                    </tr>
+                </thead>
 
-              
-                <tr>
-                
-                {% if Warning_info %}
+                <tbody>
 
-                    <h2><em><b>{{Warning_info.0}}</b></em></h2>
+                  
+                    <tr>
+                    
+                    {% if Warning_info %}
 
-                {% else %}
-                    <form method="get" action="/CartCount/" >
+                        <h2><em><b>{{Warning_info.0}}</b></em></h2>
+
+                    {% else %}
+                        <form method="get" action="/CartCount/" >
+                            
+                            {% for Buy_info in Buy_infos %}
+
+                            <tr>
+                                
+                                <th><input type="radio" name="id" value= {{forloop.counter0}} > </th>                           
+                                <td>{{Buy_info.2}}</td>
+                                <td>{{Buy_info.0}}</td>
+                                <td>{{Buy_info.1}}元</td>
+                                <td>{{Buy_info.3}}元</td>             
+                                <td>id:{{forloop.counter0}}</td>
+                            </tr>
+
+                            {% endfor %}
+
+                            
+                            <input type="submit" id="btn-delete" value="刪除">
+
+                        </form>
                         
-                        {% for Buy_info in Buy_infos %}
 
                         <tr>
-                            
-                            <th><input type="radio" name="id" value= {{forloop.counter0}} > </th>                           
-                            <td>{{Buy_info.2}}</td>
-                            <td>{{Buy_info.0}}</td>
-                            <td>{{Buy_info.1}}元</td>
-                            <td>{{Buy_info.3}}元</td>             
-                            <td>id:{{forloop.counter0}}</td>
+                            <th></th>
+                            <td></td>
+                            <th>總計：</th>
+                            <th>{{Total_price}}元</th>
                         </tr>
 
-                        {% endfor %}
-
-                        
-                        <input type="submit" id="btn-delete" value="刪除">
-
-                    </form>
-                    
-
-                    <tr>
-                        <th></th>
-                        <td></td>
-                        <th>總計：</th>
-                        <th>{{Total_price}}元</th>
-                    </tr>
-
-                {% endif %}
-
-                </tr>
-                
-            </tbody>
-
-        </table>
-
-
-        <form action="/CartCount/" method="post">{% csrf_token %}
-                
-            {% for field in form %}
-                <div class="fieldWrapper">
-                    {{ field.errors }}
-                    <b>{{ field.label}} :</b> {{ field }}
-                    {% if field.help_text %}
-                    <p class="help">{{ field.help_text|safe }}</p>
                     {% endif %}
-                 </div>
-            {% endfor %}
 
-            <input type="submit" value="確認結帳" id ='btn-Count' />
-
-        </form>
-
-    </div>
-
-    <div class="">
-        <p><a class="btn primary span2" href="/Buy/">繼續購物</a></a></p>     
-    </div>
-
-</div>
-
-<script >
-    
-
-</script>
-<div class='face-btn'>
-    <input id="facetrade" type="button" value="我們建議您的面交地點!!">
-</div>
-
-<div id='distance'></div>
-<div id="map"></div>
-
-<script>
-
-    function initMap() {
-
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer;
-            var geocoder = new google.maps.Geocoder();
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 14,
-            center: {lat: 24.801957, lng:120.971401}
-            });
-
-            marker0 = new google.maps.Marker({
-                map: map,
-                
-                animation: google.maps.Animation.DROP,
-                position: {lat: 24.804088, lng: 120.973116}
-            });
-            marker1 = new google.maps.Marker({
-                map: map,
-                
-                animation: google.maps.Animation.DROP,
-                position: {lat: 24.804482, lng: 120.965304}
-            });
-            marker2 = new google.maps.Marker({
-                map: map,
-                
-                animation: google.maps.Animation.DROP,
-                position: {lat: 24.807731, lng: 120.961097}
-            });
-            marker3 = new google.maps.Marker({
-                map: map,
-               
-                animation: google.maps.Animation.DROP,
-                position: {lat: 24.804887, lng: 120.964102}
-            });
-            marker4 = new google.maps.Marker({
-                map: map,
-                
-                animation: google.maps.Animation.DROP,
-                position: {lat: 24.806825, lng: 120.968512}
-            });   
-            directionsDisplay.setMap(map);
-
-
-          document.getElementById('facetrade').addEventListener('click', function() {
-            calculateAndDisplayRoute(directionsService, directionsDisplay, geocoder, map);
-          });
-        
-        }
-
-
-    function calculateAndDisplayRoute(directionsService,directionsDisplay,geocoder,map) {
-        
-        var address = document.getElementById('id_Address').value;
-
-
-      
-        geocoder.geocode({'address': address}, function(results, status) {
-            
-            if (status === google.maps.GeocoderStatus.OK) {
-
-                map.setCenter(results[0].geometry.location); 
-                
-
-                var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location,
-                animation: google.maps.Animation.BOUNCE
-                });
-                
-
-                var latlng0 = new google.maps.LatLng(24.804088, 120.973116);
-                var latlng1 = new google.maps.LatLng(24.804482,120.965304);
-                var latlng2 = new google.maps.LatLng(24.807731, 120.961097);
-                var latlng3 = new google.maps.LatLng(24.804887, 120.964102);
-                var latlng4 = new google.maps.LatLng(24.806825, 120.968512);
-                var facetrade = [latlng0,latlng1,latlng2,latlng3,latlng4];
-                
-                var callbackCount = 0;
-                var Max = 0;
-                var Response;
-                
-                
-                for(var i=0;i<facetrade.length;i++)
-                {
-                                     
-                    var request = {
-                        origin: results[0].geometry.location, 
-                        destination: facetrade[i],
-                        travelMode: google.maps.TravelMode.DRIVING
-                    }
+                    </tr>
                     
-                    directionsService.route(request, function(response, status) {
-                    /*這邊要注意到,google api的callback是async(非同步執行)的,
-                    也就是說他會跑完所有request,response之後才會執行callback,
-                    (也就是外迴圈會跑到i=最後一個,才執行cb loop),這也是為什麼
-                    function裡要加額外標記參數callbackcount來幫忙作判別!!!*/   
+                </tbody>
 
-                        var distance = 0;
+            </table>
 
-                        if (status === google.maps.DirectionsStatus.OK) {
-                            var route = response.routes[0];
 
-                            for (var j=0;j<route.legs.length; j++)
-                            {
-                                distance += route.legs[j].distance.value;
-                            }
+            <form action="/CartCount/" method="post">{% csrf_token %}
+                    
+                {% for field in form %}
+                    <div class="fieldWrapper">
+                        {{ field.errors }}
+                        <b>{{ field.label}} :</b> {{ field }}
+                        {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                     </div>
+                {% endfor %}
 
-                            var dist = parseFloat(distance/1000);
+                <input type="submit" value="確認結帳" id ='btn-Count' />
 
-                            if (callbackCount == 0)
-                            {
-                                Max = dist;
-                            }
+            </form>
 
-                            if (dist <= Max )
-                            {
-                                Max = dist;
-                                Response = response;                             
-                            }
+        </div>
 
-                            /*alert(callbackCount);*/
+        <div class="">
+            <p><a class="btn primary span2" href="/Buy/">繼續購物</a></a></p>     
+        </div>
 
-                            if (callbackCount==(facetrade.length-1))
-                            {
-                                document.getElementById('distance').innerHTML = '距離您:'+Max+'公里!';
-                                directionsDisplay.setDirections(Response);
-                            }                           
-                            
+    </div>
 
-                            /*document.getElementById('distance').innerHTML = dist*/ ;
+    <div class='face-btn'>
 
-                            /*directionsDisplay.setDirections(response);*/
-                        } 
+        <input id='facetrade' type='button' value='我們建議您的面交地點!!'>
+        <div id='distance'></div>
+        <div id='map'></div>  
 
-                        else {
-                          window.alert('Directions request failed due to ' + status);
-                        }
+    </div>
 
-                        callbackCount++;
 
-                        /*calcShortestRoute(origin, destn, locations.length);*/
 
-                    });
-
-                }
-
-                
-                
-
-            } 
-
-            else {
-                alert('Geocode was not successful for the following reason: ' + status);
-            }
-
-        });
-    }
-
-    
-
-</script>
-
+<script src="/static/js/googlemap_api.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3Ox4djNUNFrMRZrmgT2xMcjdhFgm7oxU&signed_in=true&callback=initMap" async defer></script>
 
 </body>
+
 
 </html>

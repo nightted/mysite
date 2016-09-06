@@ -127,7 +127,8 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-MEDIA_ROOT = 'C:/Users/h5904/mysite/static/pic'
+MEDIA_ROOT = 'C:/Users/h5904/mysite/static/'
+MEDIA_URL = '/pic/'
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 STATIC_URL = '/static/'
 STATIC_ROOT = "C:/Users/h5904/mysite/"

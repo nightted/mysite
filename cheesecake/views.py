@@ -93,10 +93,12 @@ class HomeView(TemplateView,VisitorTimeMixin):
 
         time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
         number_cake = self.cake_Count()
+        Cakes = Cake.objects.all()
 
         kwargs.update({'time':time , 
                     'number_people':number_people ,
-                    'number_cake':number_cake})
+                    'number_cake':number_cake ,
+                    'Cakes':Cakes})
 
         return super(HomeView,self).get_context_data(**kwargs)
     
@@ -214,7 +216,7 @@ class CartCountView(FormView):
     def form_valid(self,form):
 
         self.request.session['Customer_infos'] = []
-        self.request.session['Customer_infos'].append( [form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email'], form.cleaned_data['Catchmethod']] )
+        self.request.session['Customer_infos'].append( [form.cleaned_data['Customer_name'], form.cleaned_data['Address'], form.cleaned_data['Phonenumber'], form.cleaned_data['Email'], form.cleaned_data['Catchmethod'],form.cleaned_data['Catchlocation']] )
        
         ##(X)加入send_mail,顧客訂單一送出就傳mail通知~
         '''
@@ -239,7 +241,7 @@ class SuccessView(TemplateView):
         n_list = [list[2] for list in S_B]        
         
         
-        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Catchmethod=S_C[4],Buynumber=n_list )
+        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Catchmethod=S_C[4],Catchlocation=S_C[5],Buynumber=n_list )
         Buytotal.save()       
 
         for cakename in f_list:

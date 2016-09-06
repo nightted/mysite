@@ -15,7 +15,7 @@ urlpatterns = [
     #主頁用
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$',HomeView.as_view(),name='home'),
-    url(r'^post/(?P<pk>\d+)/$', PostdetailView, name='postdetail'),
+    url(r'^post/(?P<pk>\d+)/$', PostdetailView.as_view(), name='postdetail'),
     #買東西用
     url(r'^Buy/$', BuyFormView.as_view(),name='Buy'),
     url(r'^CartCount/$', CartCountView.as_view(),name='CartCount'),
@@ -28,3 +28,5 @@ urlpatterns = [
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

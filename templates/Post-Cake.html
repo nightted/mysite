@@ -25,24 +25,31 @@
             <a href="/">A Django Girl’s Adventure</a>
         </h1>
     </div>
+
     <div class="container post post-detail">
         <div class="post-heading">
             <h1 class="title">{{ title }}</h1>
             <div class="date">{{ created_at|date:'Y / m / d' }}</div>
         </div>
+
         <div class="location">
             <i class="fa fa-map-marker"></i>
             <span id="location-content">{{ location }}</span>
         </div>
+
         <div id="map-canvas" class="map"></div>
+
         <div class="post-content">
             {{ content }}
         </div>
+
         <hr class="fancy-line">
+
         <img class="photo" src="{{ post.photo }}" alt="Cover photo for {{ post.title }}">
+        
     </div>
-    <script src="//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&sensor=false"></script>
-    <script src="//djangogirlstaipei.github.io/assets/js/map.js"></script>
+    
+    
 </body>
 
 </html>
