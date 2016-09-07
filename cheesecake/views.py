@@ -95,10 +95,15 @@ class HomeView(TemplateView,VisitorTimeMixin):
         number_cake = self.cake_Count()
         Cakes = Cake.objects.all()
 
+         
+        Cart = self.request.session['Buy_infos'] if 'Buy_infos' in self.request.session  else  ''
+        
+
         kwargs.update({'time':time , 
                     'number_people':number_people ,
                     'number_cake':number_cake ,
-                    'Cakes':Cakes})
+                    'Cakes':Cakes ,
+                    'Cart':Cart})
 
         return super(HomeView,self).get_context_data(**kwargs)
     
@@ -204,7 +209,7 @@ class CartCountView(FormView):
                 #   self.request.session['stop'] = 'stop'
 
             kwargs['Buy_infos'] = self.request.session['Buy_infos']
-            kwargs['Total_price'] = self.request.session['Total_price'] # 顯示~
+            kwargs['Total_price'] = self.request.session['Total_price'] # 顯示~ (如有會員折價券幾折,判斷if可加這行)
             return super(CartCountView, self).get_context_data(**kwargs)
 
         ##(X)要是不小心太久沒結帳,session過期了, =>
@@ -236,12 +241,12 @@ class SuccessView(TemplateView):
 
         S_B = self.request.session['Buy_infos'] 
         S_C = self.request.session['Customer_infos'][0]
+        S_T = self.request.session['Total_price']
 
         f_list = [list[0] for list in S_B]
         n_list = [list[2] for list in S_B]        
-        
-        
-        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Catchmethod=S_C[4],Catchlocation=S_C[5],Buynumber=n_list )
+               
+        Buytotal = Buy.objects.create(Customer_name=S_C[0],Address=S_C[1],Phonenumber=S_C[2],Email=S_C[3],Catchmethod=S_C[4],Catchlocation=S_C[5],Buynumber=n_list,Totalprice=S_T)
         Buytotal.save()       
 
         for cakename in f_list:
@@ -249,7 +254,6 @@ class SuccessView(TemplateView):
 
         ##(O)目前問題 : 現在已經製造物件Cake , BUT 無法成功使用add 混入Buytotal中!!!         
         kwargs['Total_infos'] = Buytotal
-        kwargs['Total_price'] = self.request.session['Total_price']
         #kwargs['test'] = str(type(Buytotal.Buynumber)) 
         
         return super(SuccessView, self).get_context_data(**kwargs)

@@ -190,9 +190,6 @@ window.onload = function()
                         <span class="menu"></span>
                         <ul>
                             <li>
-                                <a href="#slider" class=''>輪播</a>
-                            </li>
-                            <li>
                                 <a href="#Introduction" class=''>蛋糕簡介</a>
                             </li>
                             <li>
@@ -203,6 +200,31 @@ window.onload = function()
                             </li>
                             <li>
                                 <a href="#Chart" class=''>兔子熱門商品</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-shopping-cart" aria-hidden="true"></i>您的購物車<b class="caret"></b></a>
+                                <ul class="dropdown-menu">              
+                                <em>
+                                    <li>
+                                        {% if not Cart %}
+                                            <p>  您沒有加入任何商品喔!</p>
+                                        {% else %}
+                                        
+                                            您選購的商品:
+                                            {% for item in Cart %}
+                                       
+                                            <p>{{item.0}} : {{item.2}}個  共:{{item.3}}元 </p>
+                                                                       
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    </li>
+                                </em>
+                                  
+                                    <li>
+                                       <a href="/CartCount/">結帳</a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
 
