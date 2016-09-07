@@ -47,7 +47,7 @@ class Customer_infoForm(forms.Form):
 	Address =  forms.CharField(max_length=200,label='您的地址(或方便的面交地點)')
 	Phonenumber = forms.CharField(max_length=20,label='您的聯絡電話')
 	Email = forms.EmailField(max_length=100,label='您的Email(非必填)',required=False)
-	Catchmethod = forms.ChoiceField(label='取貨方式',choices= (
+	Catchmethod = forms.ChoiceField(label='取貨方式(面交只限新竹市區)',choices= (
 		('郵寄','郵寄'),
 		('面交','面交'),
 	    

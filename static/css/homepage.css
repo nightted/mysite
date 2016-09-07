@@ -185,9 +185,9 @@ hr.fancy-line, hr.fancy-line:before {
 
 .read-more {
     display: inline-block;
-    color: #ccc;
+    color: #ccc ;
     padding: 5px 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc  ;
     text-decoration: none;
     transition: all 0.2s ease-out;
 
@@ -201,6 +201,23 @@ hr.fancy-line, hr.fancy-line:before {
     text-decoration:none;
 }
 
+.read-more2 {
+    display: inline-block;
+    color: #303030 ;
+    padding: 5px 15px;
+    border: 1px solid #303030  ;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+
+}
+
+.read-more2:hover {
+    background-color: #FF95CA;
+    border-color: #FF95CA;
+    color: #fff;
+    transition: all 0.2s ease-in;
+    text-decoration:none;
+}
 .post .price {
     color: #fff;
     position: absolute;
