@@ -123,8 +123,10 @@ class HomeView(TemplateView,VisitorTimeMixin):
         return super(HomeView,self).get(self, request, *args, **kwargs)
 
 
-class PostdetailView(DetailView):
-    pass
+class CakedetailView(DetailView):
+    template_name = 'Post-Cake.html'
+    model = Cake
+    context_object_name = 'CakeDetail'
 
 
 class CommentFormView(FormView):

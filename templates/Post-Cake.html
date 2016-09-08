@@ -17,36 +17,51 @@
     <!-- 外部庫 -->
     <link href="//fonts.googleapis.com/css?family=Lemon" rel="stylesheet" type="text/css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!--自訂-->
+    <link href="/static/css/homepage.css" rel="stylesheet">
+
 </head>
 
 <body>
     <div class="header">
         <h1 class="site-title text-center">
-            <a href="/">A Django Girl’s Adventure</a>
+            <a href="/">眼巴巴的兔子 CheeseCake</a>
         </h1>
     </div>
 
     <div class="container post post-detail">
         <div class="post-heading">
-            <h1 class="title">{{ title }}</h1>
-            <div class="date">{{ created_at|date:'Y / m / d' }}</div>
+            <h1 class="title">{{ CakeDetail.CakeName }}</h1>
+            <div class="price">{{CakeDetail.Price}}元</div>
         </div>
 
-        <div class="location">
-            <i class="fa fa-map-marker"></i>
-            <span id="location-content">{{ location }}</span>
-        </div>
 
-        <div id="map-canvas" class="map"></div>
 
         <div class="post-content">
-            {{ content }}
+            {{ CakeDetail.CakeContent }}
         </div>
 
         <hr class="fancy-line">
 
-        <img class="photo" src="{{ post.photo }}" alt="Cover photo for {{ post.title }}">
+        <img class="photo" src="{{ CakeDetail.photo.url}}" alt="Cover photo for {{ post.title }}">
         
+    </div>
+
+    <div class='Comment-Buy' id='Comment_Buy'>
+        <div class='container'>
+            <div class='row'>
+                <div class = 'col-lg-6 col-xs-6 col-sm-6 text-center' >
+                    <a class="read-more2" href="/Buy/" style="font-size:38px;"><i class="fa fa-shopping-cart" aria-hidden="true"></i>立即前往購買!              
+                    </a>
+                </div>
+                <div class = 'col-lg-6 col-xs-6 col-sm-6 text-center' >
+                    <p><a class="read-more2" href="/" style="font-size:38px;"><i class="fa fa-home" aria-hidden="true"></i>回首頁!
+                    
+                    </a></p>            
+                </div>
+            </div>
+        </div>
     </div>
     
     
