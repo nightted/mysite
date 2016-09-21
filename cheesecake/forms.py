@@ -52,7 +52,7 @@ class Customer_infoForm(forms.Form):
 		('面交','面交'),
 	    
 	))
-	Catchlocation = forms.ChoiceField(label='取貨地點(面交者才需要填寫)',choices= (
+	Catchlocation = forms.ChoiceField(label='取貨地點(面交者才需要填寫)',required=False,choices= (
 		('',''),
 		('新竹聖教會','A(新竹聖教會)'),
 		('城隍廟','B(城隍廟)'),

@@ -95,7 +95,7 @@ class HomeView(TemplateView,VisitorTimeMixin):
         number_cake = self.cake_Count()
         Cakes = Cake.objects.all()
 
-         
+        #homepages carts
         Cart = self.request.session['Buy_infos'] if 'Buy_infos' in self.request.session  else  ''
         
 
