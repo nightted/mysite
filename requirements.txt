@@ -4,3 +4,4 @@ dj-static
 gunicorn
 static3
 psycopg2
+whitenoise-3.2.1

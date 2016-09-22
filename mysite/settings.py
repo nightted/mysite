@@ -131,7 +131,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     'C:/Users/h5904/mysite/static',
 )
-
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Email_Data
 EMAIL_USE_TLS   = True
