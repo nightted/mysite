@@ -11,7 +11,7 @@ class CommentForm (forms.Form):
 		('原味','原味'),
 		('抹茶紅豆','抹茶紅豆'),
 		('芝麻','芝麻'),
-		('蔓越莓','蔓越莓'),
+		('覆盆莓','覆盆莓'),
 	))
 	Content = forms.CharField(max_length = 500 ,label='您的評論')
 	
@@ -24,7 +24,7 @@ class BuyForm(forms.Form):
 		('原味','原味'),
 	    ('抹茶紅豆','抹茶紅豆'),
 	    ('芝麻','芝麻'),
-	    ('蔓越莓','蔓越莓'),
+	    ('覆盆莓','覆盆莓'),
 	))
 	Number = forms.IntegerField(label='您訂購的數量',localize= False,max_value=100,min_value=0)
 

@@ -113,7 +113,7 @@ LANGUAGE_CODE = 'zh_Hant'
 
 TIME_ZONE = 'Asia/Taipei'
 
-USE_I18N = False #change this to False to solve => IOError: No translation files found for the default language zh_Hant 
+USE_I18N = True #change this to False to solve => IOError: No translation files found for the default language zh_Hant 
 
 USE_L10N = True
 
@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     
-     
+     os.path.join(BASE_DIR, "static"),
 )
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
