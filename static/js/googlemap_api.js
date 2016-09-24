@@ -128,7 +128,7 @@ function calculateAndDisplayRoute(directionsService,directionsDisplay,geocoder,m
                 directionsService.route(request, function(response, status) {
                 /*這邊要注意到,google api的callback是async(非同步執行)的,
                 也就是說他會跑完所有request,response之後才會執行callback,
-                (也就是外迴圈會跑到i=最後一個,才執行cb loop),這也是為什麼
+                (也就是外迴圈會跑到i=最後一個,才執行callback loop),這也是為什麼
                 function裡要加額外標記參數callbackcount來幫忙作判別!!!*/   
 
                     var distance = 0;
