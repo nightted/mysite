@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     
-    
+     
 )
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
