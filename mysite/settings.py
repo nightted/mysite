@@ -113,7 +113,7 @@ LANGUAGE_CODE = 'zh_Hant'
 
 TIME_ZONE = 'Asia/Taipei'
 
-USE_I18N = False #change this to False to solve => IOError: No translation files found for the default language zh_Hant 
+USE_I18N = True #change this to False to solve => IOError: No translation files found for the default language zh_Hant 
 
 USE_L10N = True
 
@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     
-     
+     os.path.join(BASE_DIR, "static"),
 )
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
@@ -143,4 +143,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'h5904098@gmail.com'
-EMAIL_HOST_PASSWORD = 'handsomehandsome'
+EMAIL_HOST_PASSWORD = ''
