@@ -26,7 +26,7 @@
 
 		<div class="container">
 
-			<form action="" method="post">{% csrf_token %}
+			<form action="/Comment/" method="post">{% csrf_token %}
 			    {% for field in form %}
 				    <div class="fieldWrapper">
 				        {{ field.errors }}
@@ -69,7 +69,7 @@
 			                <h2 class="Content">
 			                    評論:{{message.Content}} 
 			                </h2>
-			                <p>test:{{test}}</p>
+			                
 			            
 					</div>
 				</div>
