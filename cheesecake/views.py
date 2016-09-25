@@ -67,7 +67,7 @@ class VisitorTimeMixin(object):
                     number_cake[1]+= buynumber[n]
                 if flavor.CakeName == u'芝麻':
                     number_cake[2]+= buynumber[n]
-                if flavor.CakeName == u'蔓越莓':
+                if flavor.CakeName == u'覆盆莓':
                     number_cake[3]+= buynumber[n]
                 n+=1
 

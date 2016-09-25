@@ -37,7 +37,7 @@ class BuyForm(forms.Form):
 			return 550
 		if self.cleaned_data['Cakeflavor'] == u'芝麻':
 			return 500
-		if self.cleaned_data['Cakeflavor'] == u'蔓越莓':
+		if self.cleaned_data['Cakeflavor'] == u'覆盆莓':
 			return 650
 			
 
