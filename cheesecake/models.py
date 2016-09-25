@@ -9,7 +9,7 @@ class Cake(models.Model):
     CakeName = models.CharField(max_length=100)
     Price = models.CharField(max_length=10,default="")
     CakeContent = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='static',null=True,blank=True)
+    photo = models.URLField(blank=True,null=True)
     location = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
