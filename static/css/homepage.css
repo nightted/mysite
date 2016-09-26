@@ -279,7 +279,7 @@ hr.fancy-line, hr.fancy-line:before {
 
 .Comment-Buy {
     position: relative;
-    background: #FFECF5 url(../pic/back5.jpg) repeat;
+    background: rgba(255,250,250,0.3) url(../pic/back5.jpg) repeat;
     padding-top: 50px;
     padding-bottom: 50px;
   
