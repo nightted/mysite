@@ -33,7 +33,7 @@ body {
     bottom: -10px;
     height: 10px;
     width: 100%;
-    background: url('./../images/deco.png') repeat-x;
+    
 }
 
 
@@ -212,8 +212,8 @@ hr.fancy-line, hr.fancy-line:before {
 }
 
 .read-more2:hover {
-    background-color: #FF95CA;
-    border-color: #FF95CA;
+    background-color: #d0d0d0;
+    border-color: #d0d0d0;
     color: #fff;
     transition: all 0.2s ease-in;
     text-decoration:none;
@@ -276,14 +276,10 @@ hr.fancy-line, hr.fancy-line:before {
 
 }
 
-.introdution{
-
-
-}
 
 .Comment-Buy {
     position: relative;
-    background: #FFECF5 url('http://api.thumbr.it/whitenoise-1583x118.png?background=e0aada00&noise=00020f&density=16&opacity=15') repeat-x;
+    background: #FFECF5 url(../pic/back2.jpg) repeat;
     padding-top: 50px;
     padding-bottom: 50px;
   
@@ -331,4 +327,26 @@ hr.fancy-line, hr.fancy-line:before {
 .icon img {
     width: auto;
     height: 150px;
+}
+
+/*introduction*/
+.introduction{
+
+    position: relative;
+    background: #FFECF5 url(../pic/back3.png) repeat;
+    margin-top: 5px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+}
+
+.text {
+    display: block;
+    font-size: 1.5em;
+    letter-spacing: 2px;/*字距*/
+    text-align: center;
+    line-height: 1.7em;
+    color:  #000000;
+    width: 90%;
+    margin: 1em auto 2.5em auto;
 }
