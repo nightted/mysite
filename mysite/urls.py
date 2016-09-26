@@ -13,6 +13,7 @@ from views import  welcome
 
 urlpatterns = [
     #主頁用
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$',HomeView.as_view(),name='home'),
     url(r'^post/(?P<pk>\d+)/$', CakedetailView.as_view(), name='cakedetail'),

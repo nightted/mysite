@@ -1,0 +1,22 @@
+.read-more3 {
+    display: inline-block;
+    color: #303030 ;
+    padding: 5px 15px;
+    border: 1px solid #303030  ;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+
+}
+
+.read-more3:hover {
+    background-color: #FF95CA;
+    border-color: #FF95CA;
+    color: #fff;
+    transition: all 0.2s ease-in;
+    text-decoration:none;
+}
+
+.container {
+    width:100%;
+    margin: 0 auto;
+}
