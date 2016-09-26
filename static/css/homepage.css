@@ -212,8 +212,8 @@ hr.fancy-line, hr.fancy-line:before {
 }
 
 .read-more2:hover {
-    background-color: #d0d0d0;
-    border-color: #d0d0d0;
+    background-color:   #FFE153;
+    border-color:   #FFE153;
     color: #fff;
     transition: all 0.2s ease-in;
     text-decoration:none;
