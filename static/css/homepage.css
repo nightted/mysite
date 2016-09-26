@@ -20,7 +20,7 @@ body {
 
 .header {
     background-color: #fff;
-    background: #FFECF5 url('http://api.thumbr.it/whitenoise-1583x118.png?background=e0aada00&noise=00020f&density=16&opacity=15') repeat-x;
+    background: #FFECF5 url(../pic/back2.jpg) repeat-x;
     margin-bottom: 0px;
     padding: 30px 0;
     position: relative;
@@ -279,7 +279,7 @@ hr.fancy-line, hr.fancy-line:before {
 
 .Comment-Buy {
     position: relative;
-    background: #FFECF5 url(../pic/back2.jpg) repeat;
+    background: #FFECF5 url(../pic/back5.jpg) repeat;
     padding-top: 50px;
     padding-bottom: 50px;
   
