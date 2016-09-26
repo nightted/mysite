@@ -203,9 +203,9 @@ hr.fancy-line, hr.fancy-line:before {
 
 .read-more2 {
     display: inline-block;
-    color: #303030 ;
+    color: #272727 ;
     padding: 5px 15px;
-    border: 1px solid #303030  ;
+    border: 1px solid #272727  ;
     text-decoration: none;
     transition: all 0.2s ease-out;
 
