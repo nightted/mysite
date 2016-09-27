@@ -112,14 +112,14 @@ class HomeView(TemplateView,VisitorTimeMixin):
         number_cake = self.cake_Count()
         Cakes = Cake.objects.all()       
         Cart = self.request.session['Buy_infos'] if 'Buy_infos' in self.request.session  else  '' #homepages carts
-        totalviewer = self.totalviewercount()
+        viewer = self.totalviewercount()
 
         kwargs.update({'time':time , 
                     'number_people':number_people ,
                     'number_cake':number_cake ,
                     'Cakes':Cakes ,
                     'Cart':Cart,
-                    'totalviewer':totalviewer })
+                    'viewer':viewer })
 
         return super(HomeView,self).get_context_data(**kwargs)
     
