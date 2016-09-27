@@ -24,8 +24,8 @@ class VisitorTime (models.Model):
 
 class Totalviewer (models.Model):
 
-    totalviewer = models.IntegerField(default=0)
-     
+    totalviewer = models.IntegerField()
+
 
 class Comment(models.Model):
 
