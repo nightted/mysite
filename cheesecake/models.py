@@ -25,7 +25,7 @@ class VisitorTime (models.Model):
 class Totalviewer (models.Model):
 
     totalviewer = models.IntegerField(default=0)
-    time= models.DateTimeField(auto_now_add=True,null=True) 
+     
 
 class Comment(models.Model):
 
