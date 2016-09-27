@@ -289,8 +289,9 @@ hr.fancy-line, hr.fancy-line:before {
 
 .chart{
     position: relative;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    background: #FFECF5 url(../pic/back9.jpg) repeat;
+    padding-top: 50px;
+    padding-bottom: 50px;
 
 }
 
