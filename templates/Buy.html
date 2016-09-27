@@ -36,6 +36,16 @@
 					$("div.totalcost").html('共'+number*cost+'元')
 
 
+
+				});
+
+				$("#submit-btn").on("click", function() {
+					
+					var name = $("#id_Cakeflavor").val()
+					var number = $("#id_Number").val()
+
+					alert( number +'個'+ name +  '起司蛋糕已加入購物車!');
+
 				});
 
 
@@ -51,18 +61,16 @@
 				<form action="" method="post">{% csrf_token %}
 			    
 				    
+					{% for field in form %}
 					    <div class="fieldWrapper">
-					        
-					        <b>
-					        	{% for radio in form.Cakeflavor %}
-									<div class="myradio">
-									    {{ radio }}
-									</div>
-								{% endfor %}
-							</b> 
-
-							{{form.Number}}
+					        {{ field.errors }}
+					        <b>{{ field.label}} :</b> {{ field }}
+					        {% if field.help_text %}
+					        <p class="help">{{ field.help_text|safe }}</p>
+					        {% endif %}
 					    </div>
+					{% endfor %}
+
 					
 
 				    <input type="submit" value="商品加入購物車" id ='submit-btn' />

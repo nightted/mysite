@@ -20,7 +20,7 @@ class CommentForm (forms.Form):
 #add購物車
 class BuyForm(forms.Form):
 
-	Cakeflavor = forms.ChoiceField(label='您訂購的口味',widget=forms.RadioSelect,initial='原味',choices= (
+	Cakeflavor = forms.ChoiceField(label='您訂購的口味',initial='原味',choices= (
 		('原味','原味'),
 	    ('抹茶紅豆','抹茶紅豆'),
 	    ('芝麻','芝麻'),

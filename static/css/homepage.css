@@ -335,12 +335,26 @@ hr.fancy-line, hr.fancy-line:before {
     position: relative;
     background: #FFECF5 url(../pic/back4.jpg) repeat;
     margin-top: 5px;
+    margin-bottom: 5px;
     padding-top: 50px;
     padding-bottom: 50px;
 
 }
 
 .text {
+    display: block;
+    font-size: 1.5em;
+    letter-spacing: 2px;/*字距*/
+    text-align: center;
+    line-height: 1.7em;
+    color:  #000000;
+    width: 90%;
+    margin: 1em auto 2.5em auto;
+}
+
+/*foot*/
+.foot{
+    
     display: block;
     font-size: 1.5em;
     letter-spacing: 2px;/*字距*/

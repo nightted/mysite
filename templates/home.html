@@ -121,7 +121,7 @@ window.onload = function()
                     options:{
                                 title: {
                                     display: true,
-                                    text: 'People online',
+                                    text: 'People online:' + {{number_people.20}} + '人' ,
                                     fontFamily: "cursive",
                                     fontsize: 20,
                                     fontStyle: 'oblique'
@@ -276,7 +276,7 @@ window.onload = function()
                 <br>
                 "生活中有太多的不滿與壓力，要是能夠在下班放鬆時刻"
                 <br>
-                "來一塊由純天然奶油不加色素，口感香醇的Cheesecake"
+                "來一塊純天然奶油、不加色素，口感香醇的Cheesecake"
                 <br>
                 "配上一杯自己親手泡的咖啡或英格蘭紅茶"
                 <br>
@@ -360,6 +360,10 @@ window.onload = function()
             <div class='col-lg-6'><canvas id="chart-area-line" class="zone1"></canvas></div>         
             <div class='col-lg-6'><canvas id="chart-area-bar" class="zone2"></canvas></div>
         <div>
+    </div>
+
+    <div class = "foot">
+        " 訪客人數總計: {{totalviewer}} 人 "
     </div>
         
               

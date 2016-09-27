@@ -8,7 +8,7 @@ from django.conf import settings
 
 import threading
 from datetime import datetime
-from cheesecake.models  import Cake,VisitorTime,Comment,Buy
+from cheesecake.models  import Cake,VisitorTime,Totalviewer,Comment,Buy
 from cheesecake.forms  import CommentForm, BuyForm, Customer_infoForm
 from cheesecake.Visitor_CakeNumber  import *
 from django import forms
@@ -47,7 +47,18 @@ class VisitorTimeMixin(object):
                 VisitorTime.objects.all()[0].delete()
    
         VisitorTime.objects.create(number=self.Visitor_Count())
-   
+
+
+    def totalviewercount(self):
+
+        l = len(Totalviewer.objects.all())
+        if l == 0:
+            Totalviewer.objects.create(totalviewer=1)
+            return 1
+        else:           
+            viewer = Totalviewer.objects.all()[l-1].totalviewer + 1
+            Totalviewer.objects.create(totalviewer=viewer)
+            return viewer  
         
         
     def cake_Count(self):
@@ -73,7 +84,11 @@ class VisitorTimeMixin(object):
 
         return number_cake
 
+     
+
     #set_interval(data_to_SQL, 10)
+
+
 
 
 
@@ -81,9 +96,11 @@ class VisitorTimeMixin(object):
 class HomeView(TemplateView,VisitorTimeMixin):
     
     template_name = 'home.html'
+    total_viewer = 0
 
     def get_context_data(self, **kwargs):
 
+        
         number_people=[]
         t=[]
         for i in VisitorTime.objects.all():
@@ -93,17 +110,16 @@ class HomeView(TemplateView,VisitorTimeMixin):
 
         time=json.dumps(t)  #(O)這邊要注意 "str" list 要在<script> 內顯示需要先編碼成json
         number_cake = self.cake_Count()
-        Cakes = Cake.objects.all()
-
-        #homepages carts
-        Cart = self.request.session['Buy_infos'] if 'Buy_infos' in self.request.session  else  ''
-        
+        Cakes = Cake.objects.all()       
+        Cart = self.request.session['Buy_infos'] if 'Buy_infos' in self.request.session  else  '' #homepages carts
+        totalviewer = self.totalviewercount()
 
         kwargs.update({'time':time , 
                     'number_people':number_people ,
                     'number_cake':number_cake ,
                     'Cakes':Cakes ,
-                    'Cart':Cart})
+                    'Cart':Cart,
+                    'totalviewer':totalviewer })
 
         return super(HomeView,self).get_context_data(**kwargs)
     
