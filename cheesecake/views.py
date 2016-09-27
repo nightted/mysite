@@ -49,16 +49,7 @@ class VisitorTimeMixin(object):
         VisitorTime.objects.create(number=self.Visitor_Count())
 
 
-    def totalviewercount(self):
-
-        l = len(Totalviewer.objects.all())
-        if l == 0:
-            Totalviewer.objects.create(totalviewer=1)
-            return 1
-        else:           
-            viewer = Totalviewer.objects.all()[l-1].totalviewer + 1
-            Totalviewer.objects.create(totalviewer=viewer)
-            return viewer  
+     
         
         
     def cake_Count(self):
@@ -112,14 +103,14 @@ class HomeView(TemplateView,VisitorTimeMixin):
         number_cake = self.cake_Count()
         Cakes = Cake.objects.all()       
         Cart = self.request.session['Buy_infos'] if 'Buy_infos' in self.request.session  else  '' #homepages carts
-        totalviewer = self.totalviewercount()
+        
 
         kwargs.update({'time':time , 
                     'number_people':number_people ,
                     'number_cake':number_cake ,
                     'Cakes':Cakes ,
                     'Cart':Cart,
-                    'totalviewer':totalviewer })
+                     })
 
         return super(HomeView,self).get_context_data(**kwargs)
     
