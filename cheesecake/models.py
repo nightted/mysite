@@ -22,10 +22,11 @@ class VisitorTime (models.Model):
     number = models.IntegerField(null=True)
     time= models.DateTimeField(auto_now_add=True,null=True) 
 
+
 class Totalviewer (models.Model):
 
-    pass
-
+    totalviewer = models.IntegerField(null=True)
+    time= models.DateTimeField(auto_now_add=True,null=True) 
 
 class Comment(models.Model):
 
