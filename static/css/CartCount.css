@@ -29,7 +29,33 @@ html, body {
 	width: 100%;
 	z-index: 0;	
 	opacity: 0;
-	
+}
 
+.table{
+	display: block;
+    font-size: 1.5em;
+    letter-spacing: 2px;/*字距*/
+    text-align: center;
+    line-height: 1.7em;
+    color:  #000000;
+    width: 90%;
+    margin: 1em auto 2.5em auto;
+}
 
+.read-more3 {
+    display: inline-block;
+    color: #272727 ;
+    padding: 5px 15px;
+    border: 1px solid #272727  ;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+
+}
+
+.read-more3:hover {
+    background-color:   #FFE153;
+    border-color:   #FFE153;
+    color: #fff;
+    transition: all 0.2s ease-in;
+    text-decoration:none;
 }

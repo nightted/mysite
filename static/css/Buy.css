@@ -20,3 +20,25 @@
     width:100%;
     margin: 0 auto;
 }
+
+.totalcost {
+    display: block;
+    font-size: 1.5em;
+    letter-spacing: 2px;/*字距*/
+    text-align: center;
+    line-height: 1.7em;
+    color:  #000000;
+    width: 90%;
+    margin: 1em auto 2.5em auto;
+}
+
+.form{
+    display: block;
+    font-size: 1.5em;
+    letter-spacing: 2px;/*字距*/
+    text-align: center;
+    line-height: 1.7em;
+    color:  #000000;
+    width: 90%;
+    margin: 1em auto 2.5em auto;
+}

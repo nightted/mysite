@@ -44,7 +44,7 @@
 
 
     <div class="container">
-        <div class="">
+        <div class="table">
             <table class="condensed-table">
                 <thead>
                     <tr>
@@ -82,7 +82,7 @@
                             {% endfor %}
 
                             
-                            <input type="submit" id="btn-delete" value="刪除">
+                            <input type="submit" id="btn-delete" value="刪除商品">
 
                         </form>
                         
@@ -115,14 +115,15 @@
                      </div>
                 {% endfor %}
 
-                <input type="submit" value="確認結帳" id ='btn-Count' />
+                <input type="submit" value="確認結帳" id ='btn-Count'></input>
 
             </form>
 
         </div>
 
-        <div class="">
-            <p><a class="btn primary span2" href="/Buy/">繼續購物</a></a></p>     
+        <div class="count text-center">
+            <a class="read-more3" href="/Buy/" style="font-size:38px;"><i class="fa fa-shopping-cart" aria-hidden="true"></i>繼續購物!              
+            </a>     
         </div>
 
     </div>
