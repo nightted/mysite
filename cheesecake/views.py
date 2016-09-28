@@ -52,7 +52,7 @@ class VisitorTimeMixin(object):
     def totalviewercount(self):
 
         l = len(Totalviewer.objects.all())
-        if l == 0:
+        if not l :
             Totalviewer.objects.create(totalviewer=1)
             return 1
         else:           
