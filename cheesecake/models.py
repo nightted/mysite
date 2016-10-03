@@ -17,9 +17,9 @@ class Cake(models.Model):
         return  self.CakeName
 
 
-class VisitorTime (models.Model):
+class Visitor (models.Model):
 
-    number = models.IntegerField(default=0)
+    onlinenumber = models.IntegerField(null=True)
     time= models.DateTimeField(auto_now_add=True,null=True) 
 
 

@@ -8,7 +8,7 @@ from django.conf import settings
 
 import threading
 from datetime import datetime
-from cheesecake.models  import Cake,VisitorTime,Totalviewer,Comment,Buy
+from cheesecake.models  import Cake,Visitor,Totalviewer,Comment,Buy
 from cheesecake.forms  import CommentForm, BuyForm, Customer_infoForm
 from cheesecake.Visitor_CakeNumber  import *
 from django import forms
@@ -42,11 +42,11 @@ class VisitorTimeMixin(object):
     
     def data_to_SQL(self):
 
-        if  VisitorTime.objects.count() > 20:
-            for i in range(0,VisitorTime.objects.count()-20):
-                VisitorTime.objects.all()[0].delete()
+        if  Visitor.objects.count() > 20:
+            for i in range(0,Visitor.objects.count()-20):
+                Visitor.objects.all()[0].delete()
    
-        VisitorTime.objects.create(number=self.Visitor_Count())
+        Visitor.objects.create(onlinenumber=self.Visitor_Count())
 
 
     def totalviewercount(self):
@@ -103,8 +103,8 @@ class HomeView(TemplateView,VisitorTimeMixin):
         
         number_people=[]
         t=[]
-        for i in VisitorTime.objects.all():
-                number_people.append(int(i.number))
+        for i in Visitor.objects.all():
+                number_people.append(int(i.onlinenumber))
                 a="{0}月{1}日 - {2}:{3}:{4}".format(i.time.strftime('%m'),i.time.strftime('%d'),i.time.strftime('%H'),i.time.strftime('%M'),i.time.strftime('%S'))
                 t.append(a)
 

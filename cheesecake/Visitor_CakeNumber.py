@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 import threading
-from cheesecake.models  import VisitorTime ,Buy
+from cheesecake.models  import Visitor ,Buy
 from django.contrib.sessions.models import Session 
 from datetime import datetime
 
