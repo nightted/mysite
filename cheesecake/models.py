@@ -19,7 +19,7 @@ class Cake(models.Model):
 
 class VisitorTime (models.Model):
 
-    number = models.IntegerField()
+    number = models.IntegerField(default="")
     time= models.DateTimeField(auto_now_add=True) 
 
 
