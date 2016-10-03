@@ -42,9 +42,7 @@ class VisitorTimeMixin(object):
     
     def data_to_SQL(self):
 
-        if  VisitorTime.objects.count() > 20:
-            for i in range(0,VisitorTime.objects.count()-20):
-                VisitorTime.objects.all()[0].delete()
+        
    
         VisitorTime.objects.create(number=self.Visitor_Count())
 
@@ -128,11 +126,11 @@ class HomeView(TemplateView,VisitorTimeMixin):
         #%% Django only saves to the session database when the session has been modified!!!
         
         request.session['uesr_id'] = Session.objects.count() +1     #set sessions
-        request.session.set_expiry(60)  #set sessions expiry
+        request.session.set_expiry(300)  #set sessions expiry
         request.session.clear_expired()   #clear expired sessions
         #(X)解決Session.objects算不到的問題
         #(O)嘗試用settinterval 概念 每十分鐘就利用Function發出Request 抓取Count數值 並存到Models裡
-        self.set_interval(self.data_to_SQL,60)# transfer visitor data to SQL
+        self.set_interval(self.data_to_SQL,300)# transfer visitor data to SQL
         
         #session過期時間應該跟抓取時間一致才能統計'一個間隔'內的上線數
 
