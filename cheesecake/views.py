@@ -42,8 +42,9 @@ class VisitorTimeMixin(object):
     
     def data_to_SQL(self):
 
-        if  Visitor.objects.count() > 20:
-            for i in range(0,Visitor.objects.count()-20):
+        limit = 10
+        if  Visitor.objects.count() > limit:
+            for i in range(0,Visitor.objects.count()-limit):
                 Visitor.objects.all()[0].delete()
    
         Visitor.objects.create(onlinenumber=self.Visitor_Count())
