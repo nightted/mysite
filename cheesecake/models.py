@@ -19,8 +19,8 @@ class Cake(models.Model):
 
 class VisitorTime (models.Model):
 
-    number = models.IntegerField(null=True)
-    time= models.DateTimeField(auto_now_add=True,null=True) 
+    number = models.IntegerField()
+    time= models.DateTimeField(auto_now_add=True) 
 
 
 class Totalviewer (models.Model):
